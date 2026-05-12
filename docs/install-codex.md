@@ -16,7 +16,9 @@ MCP-backed plugins include `.mcp.json` templates. Copy real URLs and tokens only
 
 ## Upstream Home Assistant Skill Pack
 
-This marketplace includes `homeassistant-ai/skills` as a Git submodule at `plugins/homeassistant-ai-skills`. Current Codex marketplace Git install code uses plain `git clone`, so initialize submodules after cloning this repository if you want the local upstream skill pack:
+This marketplace exposes `homeassistant-ai/skills` as a direct Git plugin source so Codex can fetch it independently. It also includes the same upstream repo as a maintainer submodule at `plugins/homeassistant-ai-skills`.
+
+Current Codex marketplace Git install code uses plain `git clone`, so initialize submodules after cloning this repository only if you want the local maintainer copy:
 
 ```bash
 git submodule update --init --recursive

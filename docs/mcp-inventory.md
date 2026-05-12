@@ -5,7 +5,7 @@ This file maps marketplace plugins to canonical MCP integrations and skill-pack 
 | Plugin | Canonical MCP or pack | Bundled template | Transport | Runtime command or endpoint | Notes |
 |---|---|---|---|---|---|
 | `ha-foundation-skills` | Local curated skills, inspired by `homeassistant-ai/skills` categories | None | Skill files | `plugins/ha-foundation-skills/skills/*/SKILL.md` | Local safety baseline maintained in this repository. |
-| `homeassistant-ai-skills` | Canonical upstream `homeassistant-ai/skills` pack | Git submodule | Skill files | `plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/SKILL.md` | Upstream MIT skill pack. Codex accepts its `.claude-plugin/plugin.json` manifest and default `skills/` directory. |
+| `homeassistant-ai-skills` | Canonical upstream `homeassistant-ai/skills` pack | Direct Git plugin source plus maintainer submodule | Skill files | `https://github.com/homeassistant-ai/skills.git` at `237ff71091b5b791e869334a65cc5d98641a8376` | Upstream MIT skill pack. Codex accepts its `.claude-plugin/plugin.json` manifest and default `skills/` directory. |
 | `ha-context-official` | Official Home Assistant MCP Server | `plugins/ha-context-official/.mcp.json` | HTTP | `${HOMEASSISTANT_URL}/api/mcp` | Canonical official endpoint. Use OAuth where client supports it; bearer-token template is for clients that support headers. |
 | `ha-config-ha-mcp` | `homeassistant-ai/ha-mcp` | `plugins/ha-config-ha-mcp/.mcp.json` | stdio and HTTP | `uvx ha-mcp@latest` or `${HA_MCP_URL}` | `uvx` stdio is the canonical local client template. HTTP covers add-on, web, Docker, or proxy mode. |
 | `ha-repo-poweruser` | Local stdlib repo scanner plus `ha-pilot` concept reference | None | Local scripts | `python3 scripts/scan_ha_entity_refs.py` | `ha-pilot` repo was unavailable to inspect; no MCP template is shipped for it. |
@@ -18,7 +18,8 @@ This file maps marketplace plugins to canonical MCP integrations and skill-pack 
 Skill packs are handled as layered guidance, not hard dependencies.
 
 1. The marketplace ships a small local curated pack in `ha-foundation-skills` so the scaffold is useful even without upstream checkout.
-2. `homeassistant-ai/skills` is included as a Git submodule at `plugins/homeassistant-ai-skills`.
-3. Codex currently uses plain `git clone` for marketplace add and plugin source materialization. It does not run `git clone --recurse-submodules` or `git submodule update --init`, so consumers who install from Git must initialize submodules when they want this local upstream pack.
-4. `homeassistant-ai/ha-mcp` may expose skills as MCP resources or resource-reading tools for clients that support them. Treat those as optional runtime context.
-5. Local skills remain conservative safety overlays rather than trying to mirror every upstream skill.
+2. `homeassistant-ai/skills` is exposed to Codex as a direct Git plugin source so marketplace install does not depend on submodule hydration.
+3. The repository also keeps `homeassistant-ai/skills` as a maintainer submodule at `plugins/homeassistant-ai-skills`.
+4. Codex currently uses plain `git clone` for marketplace add and plugin source materialization. It does not run `git clone --recurse-submodules` or `git submodule update --init`, so the submodule is not the install path.
+5. `homeassistant-ai/ha-mcp` may expose skills as MCP resources or resource-reading tools for clients that support them. Treat those as optional runtime context.
+6. Local skills remain conservative safety overlays rather than trying to mirror every upstream skill.

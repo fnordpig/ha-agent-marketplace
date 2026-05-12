@@ -12,6 +12,8 @@ Codex source inspection shows the plugin manifest loader also accepts `.claude-p
 
 Codex source inspection also shows marketplace add and plugin source materialization use plain `git clone`, not recursive submodule checkout. Users cloning this marketplace from Git should run `git submodule update --init --recursive` or clone with `--recurse-submodules` if they want `plugins/homeassistant-ai-skills` populated.
 
+Because Codex does not hydrate submodules during marketplace install, the `homeassistant-ai-skills` marketplace entry uses a direct Git plugin source pinned to the upstream commit. The submodule remains for maintainers and local review only.
+
 ## Claude Code Compatibility Notes
 
 Claude Code is a secondary target. This scaffold provides shared skill content and Claude-oriented setup snippets, but it does not assume Codex marketplace metadata is directly installable by Claude Code.
@@ -28,4 +30,4 @@ Some comparative MCP servers are control-oriented or broad system-admin tools. T
 
 ## Conservative Choices
 
-No upstream code is vendored. `homeassistant-ai/skills` is included as a Git submodule pinned by the superproject commit. `.mcp.json` files are templates and placeholders. High-privilege tools are documented as opt-in and approval-gated.
+No upstream code is vendored. `homeassistant-ai/skills` is exposed as a direct Git plugin source and also included as a Git submodule pinned by the superproject commit for maintainer review. `.mcp.json` files are templates and placeholders. High-privilege tools are documented as opt-in and approval-gated.

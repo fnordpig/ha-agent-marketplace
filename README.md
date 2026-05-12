@@ -26,7 +26,7 @@ For Claude Code, use the shared `SKILL.md` content and the MCP snippets in `docs
 
 See `docs/mcp-inventory.md` for the canonical mapping between plugins and MCPs. The `ha-config-ha-mcp` plugin includes both `uvx ha-mcp@latest` and HTTP/add-on templates. Skill packs are handled as local curated skills plus the upstream `homeassistant-ai/skills` submodule.
 
-`homeassistant-ai/skills` is included as a Git submodule at `plugins/homeassistant-ai-skills`. Clone with submodules when you want the upstream skill pack available from the checked-out marketplace:
+`homeassistant-ai/skills` is installed by Codex as a direct Git plugin source, pinned to the same upstream commit tracked by the maintainer submodule. The submodule at `plugins/homeassistant-ai-skills` is for local review and maintainer workflows. Clone with submodules when you want that local checkout populated:
 
 ```bash
 git clone --recurse-submodules git@github.com:fnordpig/ha-agent-marketplace.git

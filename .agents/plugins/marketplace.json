@@ -12,7 +12,11 @@
     },
     {
       "name": "homeassistant-ai-skills",
-      "source": {"source": "local", "path": "./plugins/homeassistant-ai-skills"},
+      "source": {
+        "source": "url",
+        "url": "https://github.com/homeassistant-ai/skills.git",
+        "sha": "237ff71091b5b791e869334a65cc5d98641a8376"
+      },
       "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
       "category": "Developer Tools"
     },
