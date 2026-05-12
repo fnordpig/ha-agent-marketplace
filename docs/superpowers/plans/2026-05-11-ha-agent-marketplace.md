@@ -268,7 +268,7 @@ Expected: each MCP-backed plugin explains how to configure the upstream without 
 
 Implement JSON loading, path existence checks, plugin manifest checks, referenced `skills`, `mcpServers`/MCP, and `hooks` paths.
 
-Expected command: `python3 scripts/validate_marketplace.py`
+Expected command: `uv run python scripts/validate_marketplace.py`
 
 Expected result: readable report and exit 0 after scaffold is complete.
 
@@ -276,7 +276,7 @@ Expected result: readable report and exit 0 after scaffold is complete.
 
 Validate required fields, relative paths, sensible capabilities, and write capability justification.
 
-Expected command: `python3 scripts/validate_plugin_manifests.py`
+Expected command: `uv run python scripts/validate_plugin_manifests.py`
 
 Expected result: readable report and exit 0 after manifests are aligned.
 
@@ -284,7 +284,7 @@ Expected result: readable report and exit 0 after manifests are aligned.
 
 Parse simple YAML frontmatter without third-party dependencies. Check `name`, `description`, length, and safety language for write-capable skills.
 
-Expected command: `python3 scripts/lint_skills.py`
+Expected command: `uv run python scripts/lint_skills.py`
 
 Expected result: readable report and exit 0.
 
@@ -292,7 +292,7 @@ Expected result: readable report and exit 0.
 
 Implement recursive scanning for `.yaml`, `.yml`, `.json`, `.md`, `.jinja`, and `.j2`. Detect likely entity IDs with a regex shaped like `domain.object_name`, avoid common false positives, support `--root`, `--json`, and `--summary`.
 
-Expected command: `python3 scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary`
+Expected command: `uv run python scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary`
 
 Expected result: summary includes generic sample entities and exits 0.
 
@@ -379,10 +379,10 @@ Expected: example repo is safe to inspect and edit.
 Run:
 
 ```bash
-python3 scripts/validate_marketplace.py
-python3 scripts/validate_plugin_manifests.py
-python3 scripts/lint_skills.py
-python3 scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
+uv run python scripts/validate_marketplace.py
+uv run python scripts/validate_plugin_manifests.py
+uv run python scripts/lint_skills.py
+uv run python scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
 ```
 
 Expected: all commands exit 0.

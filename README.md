@@ -26,6 +26,12 @@ For Claude Code, use the shared `SKILL.md` content and the MCP snippets in `docs
 
 See `docs/mcp-inventory.md` for the canonical mapping between plugins and MCPs. The `ha-config-ha-mcp` plugin includes both `uvx ha-mcp@latest` and HTTP/add-on templates, but MCP templates are opt-in and are not auto-started by plugin install. Skill packs are handled as local curated skills plus the upstream `homeassistant-ai/skills` submodule.
 
+To connect the official Home Assistant context MCP from inside Codex, ask:
+
+```text
+Set up ha-context-official for homeassistant.local using HOMEASSISTANT_TOKEN.
+```
+
 `homeassistant-ai/skills` is installed by Codex as a direct Git plugin source, pinned to the same upstream commit tracked by the maintainer submodule. The submodule at `plugins/homeassistant-ai-skills` is for local review and maintainer workflows. Clone with submodules when you want that local checkout populated:
 
 ```bash
@@ -52,8 +58,8 @@ Treat live deploy tools, registry changes, `.storage`, `secrets.yaml`, UI-manage
 ## Validate
 
 ```bash
-python3 scripts/validate_marketplace.py
-python3 scripts/validate_plugin_manifests.py
-python3 scripts/lint_skills.py
-python3 scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
+uv run python scripts/validate_marketplace.py
+uv run python scripts/validate_plugin_manifests.py
+uv run python scripts/lint_skills.py
+uv run python scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
 ```

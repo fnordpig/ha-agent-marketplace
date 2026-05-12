@@ -119,10 +119,10 @@ All scripts will use Python stdlib only.
 Implementation validation must run:
 
 ```bash
-python3 scripts/validate_marketplace.py
-python3 scripts/validate_plugin_manifests.py
-python3 scripts/lint_skills.py
-python3 scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
+uv run python scripts/validate_marketplace.py
+uv run python scripts/validate_plugin_manifests.py
+uv run python scripts/lint_skills.py
+uv run python scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
 ```
 
 Any failures found by these commands must be fixed before the scaffold is reported complete.
@@ -141,7 +141,7 @@ The implementation is complete when:
 - All seven plugins have manifests and expected content.
 - Codex and Claude compatibility marketplace files exist.
 - Docs describe architecture, security, install paths, profiles, Home Assistant boundaries, upstream inventory, implementation notes, and example sessions.
-- Scripts are stdlib-only and executable with `python3`.
+- Scripts are stdlib-only and executable with `uv run python`.
 - The example Home Assistant config repo uses generic sample entities only.
 - Validation commands pass.
 - The scaffold is committed.

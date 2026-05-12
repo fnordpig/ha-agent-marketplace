@@ -6,7 +6,6 @@
 - Prefer docs and templates over live Home Assistant mutation.
 - Do not connect to a live Home Assistant instance from this repository.
 - Any change to high-privilege plugins must update `docs/security-model.md`.
-- Run validation scripts before final response.
+- Run validation scripts with `uv run python` before final response.
 - Keep upstream integrations as references/templates rather than vendored code.
 - If plugin schemas are ambiguous, document the ambiguity in `docs/implementation-notes.md`.
-
