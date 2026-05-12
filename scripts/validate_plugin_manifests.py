@@ -34,7 +34,7 @@ def main() -> int:
         missing = REQUIRED - set(manifest)
         if missing:
             errors.append(f"{name}: missing {sorted(missing)}")
-        for key in ("skills", "mcpServers", "hooks"):
+        for key in ("skills", "mcpServers", "hooks", "commands"):
             value = manifest.get(key)
             if value and not value.startswith("./"):
                 errors.append(f"{name}: {key} should start with ./")

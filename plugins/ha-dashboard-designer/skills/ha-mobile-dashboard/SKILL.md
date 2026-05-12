@@ -1,6 +1,15 @@
 ---
 name: ha-mobile-dashboard
 description: Design mobile Home Assistant dashboards for fast repeated use.
+graph:
+  generalizes_to:
+    - ha-lovelace-yaml-dashboard
+  specializes_into: []
+  cross_references:
+    - ha-helper-selection
+    - ha-mcp-config-author
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/dashboard-guide.md
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/dashboard-cards.md
 ---
 
 # HA Mobile Dashboard

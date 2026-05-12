@@ -18,6 +18,8 @@ The MCP-backed plugins were bumped to `0.1.2` after moving root `.mcp.json` temp
 
 Because Codex does not hydrate submodules during marketplace install, the `home-assistant-skills` marketplace entry uses a direct Git plugin source pinned to the upstream commit. The marketplace plugin name must match upstream `.claude-plugin/plugin.json` exactly, so it uses `home-assistant-skills` rather than the maintainer submodule directory name `homeassistant-ai-skills`.
 
+The local marketplace skills include `graph` frontmatter with `generalizes_to`, `specializes_into`, and `cross_references` edges. The upstream `home-assistant-skills` submodule is referenced as an external node but is not modified. `ha-foundation-skills` ships `/ha-marketplace-orientation` plus `ha-marketplace-orientation` as the top-level graph entry point.
+
 ## Claude Code Compatibility Notes
 
 Claude Code is a secondary target. This scaffold provides shared skill content and Claude-oriented setup snippets, but it does not assume Codex marketplace metadata is directly installable by Claude Code.

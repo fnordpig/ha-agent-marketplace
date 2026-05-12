@@ -1,6 +1,6 @@
 {
   "name": "ha-review-gates",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Validation, review checklists, and conservative hook templates for Home Assistant changes.",
   "author": {"name": "fnordpig"},
   "license": "MIT",
@@ -17,4 +17,3 @@
     "defaultPrompt": ["Review this Home Assistant change for destructive operations and rollback coverage."]
   }
 }
-

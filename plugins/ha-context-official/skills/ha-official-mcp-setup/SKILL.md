@@ -1,6 +1,14 @@
 ---
 name: ha-official-mcp-setup
 description: Use when setting up or repairing the official Home Assistant MCP connection in Codex.
+graph:
+  generalizes_to:
+    - ha-mcp-setup
+  specializes_into:
+    - ha-official-mcp-context
+  cross_references:
+    - plugins/ha-context-official/scripts/setup_official_mcp.py
+    - docs/mcp-inventory.md
 ---
 
 # Official Home Assistant MCP Setup

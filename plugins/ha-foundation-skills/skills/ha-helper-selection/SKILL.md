@@ -1,6 +1,15 @@
 ---
 name: ha-helper-selection
 description: Select Home Assistant helpers for reusable and user-visible state.
+graph:
+  generalizes_to:
+    - ha-automation-author
+    - ha-mcp-config-author
+  specializes_into: []
+  cross_references:
+    - home-assistant-best-practices
+    - ha-entity-refactor
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/helper-selection.md
 ---
 
 # Home Assistant Helper Selection

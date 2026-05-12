@@ -1,6 +1,17 @@
 ---
 name: ha-mcp-setup
 description: Use when setting up Home Assistant MCP profiles in Codex.
+graph:
+  generalizes_to:
+    - ha-marketplace-orientation
+  specializes_into:
+    - ha-official-mcp-setup
+    - ha-official-mcp-context
+    - ha-mcp-config-author
+    - ha-vibecode-deploy
+  cross_references:
+    - docs/mcp-inventory.md
+    - plugins/ha-foundation-skills/scripts/setup_ha_mcps.py
 ---
 
 # Home Assistant MCP Setup

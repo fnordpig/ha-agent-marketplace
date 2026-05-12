@@ -1,6 +1,17 @@
 ---
 name: ha-security-review
 description: Review Home Assistant agent changes for secrets and privilege boundaries.
+graph:
+  generalizes_to:
+    - ha-change-review
+    - ha-mcp-tool-policy
+  specializes_into: []
+  cross_references:
+    - ha-mcp-setup
+    - ha-live-deploy-safety
+    - docs/security-model.md
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/safe-refactoring.md
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/yaml-only-integrations.md
 ---
 
 # HA Security Review

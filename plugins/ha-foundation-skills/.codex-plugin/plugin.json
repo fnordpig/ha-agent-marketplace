@@ -1,10 +1,11 @@
 {
   "name": "ha-foundation-skills",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Home Assistant best-practice skills and shared MCP setup workflow.",
   "author": {"name": "fnordpig"},
   "license": "MIT",
   "keywords": ["home-assistant", "skills", "automation"],
+  "commands": "./commands",
   "skills": "./skills",
   "interface": {
     "displayName": "Home Assistant Foundation Skills",

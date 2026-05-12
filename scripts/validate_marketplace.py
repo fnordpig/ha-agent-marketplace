@@ -39,7 +39,7 @@ def validate_local_plugin(name: str, root: Path, path: str, errors: list[str]) -
         errors.append(f"{name}: missing .codex-plugin/plugin.json or .claude-plugin/plugin.json")
         return
     manifest = load_json(manifest_path)
-    for field in ("skills", "mcpServers", "hooks"):
+    for field in ("skills", "mcpServers", "hooks", "commands"):
         rel = manifest.get(field)
         if rel and not rel_exists(plugin_dir, rel):
             errors.append(f"{name}: {field} path missing: {rel}")

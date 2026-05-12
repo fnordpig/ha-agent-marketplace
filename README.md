@@ -32,6 +32,12 @@ To connect Home Assistant MCPs from inside Codex, ask:
 Set up Home Assistant MCPs for http://homeassistant:8123 with the builder profile.
 ```
 
+To choose the right plugin, MCP, skill, and safety gate for a task, use the orientation graph:
+
+```text
+/ha-marketplace-orientation inspect my automations for stale entity references
+```
+
 `homeassistant-ai/skills` is installed by Codex as a direct Git plugin source, pinned to the same upstream commit tracked by the maintainer submodule. The submodule at `plugins/homeassistant-ai-skills` is for local review and maintainer workflows. Clone with submodules when you want that local checkout populated:
 
 ```bash

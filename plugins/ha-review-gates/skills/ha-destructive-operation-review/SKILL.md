@@ -1,6 +1,15 @@
 ---
 name: ha-destructive-operation-review
 description: Review delete, remove, restart, and registry operations before execution.
+graph:
+  generalizes_to:
+    - ha-change-review
+    - ha-mcp-tool-policy
+  specializes_into: []
+  cross_references:
+    - ha-entity-refactor
+    - ha-live-deploy-safety
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/safe-refactoring.md
 ---
 
 # HA Destructive Operation Review

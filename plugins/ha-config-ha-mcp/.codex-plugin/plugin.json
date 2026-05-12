@@ -1,6 +1,6 @@
 {
   "name": "ha-config-ha-mcp",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Broad Home Assistant configuration authoring profile for homeassistant-ai/ha-mcp.",
   "author": {"name": "fnordpig"},
   "license": "MIT",

@@ -1,6 +1,17 @@
 ---
 name: ha-live-deploy-safety
 description: Enforce backup, validation, approval, and rollback for live HA deploys.
+graph:
+  generalizes_to:
+    - ha-vibecode-deploy
+  specializes_into:
+    - ha-backup-rollback
+    - ha-destructive-operation-review
+  cross_references:
+    - ha-security-review
+    - docs/security-model.md
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/safe-refactoring.md
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/yaml-only-integrations.md
 ---
 
 # HA Live Deploy Safety

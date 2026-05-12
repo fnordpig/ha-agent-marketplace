@@ -1,6 +1,16 @@
 ---
 name: ha-entity-refactor
 description: Refactor Home Assistant entity references with dependency scanning.
+graph:
+  generalizes_to:
+    - ha-mcp-config-author
+    - ha-repo-refactor
+  specializes_into:
+    - ha-dependency-graph
+  cross_references:
+    - home-assistant-best-practices
+    - ha-destructive-operation-review
+    - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/safe-refactoring.md
 ---
 
 # Home Assistant Entity Refactor
