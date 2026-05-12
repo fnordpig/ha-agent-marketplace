@@ -16,15 +16,21 @@ For Claude Code, use the shared `SKILL.md` content and the MCP snippets in `docs
 
 ## Profiles
 
-- Safe Observer: `ha-foundation-skills`, `ha-context-official`
-- Builder: `ha-foundation-skills`, `ha-config-ha-mcp`, `ha-dashboard-designer`, `ha-review-gates`
-- Power User: `ha-foundation-skills`, `ha-config-ha-mcp`, `ha-repo-poweruser`, `ha-dashboard-designer`, `ha-review-gates`
-- Live Deployer: `ha-foundation-skills`, `ha-deploy-vibecode`, `ha-review-gates`
+- Safe Observer: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-context-official`
+- Builder: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-config-ha-mcp`, `ha-dashboard-designer`, `ha-review-gates`
+- Power User: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-config-ha-mcp`, `ha-repo-poweruser`, `ha-dashboard-designer`, `ha-review-gates`
+- Live Deployer: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-deploy-vibecode`, `ha-review-gates`
 - Full Power: all plugins
 
 ## MCP And Skill Inventory
 
-See `docs/mcp-inventory.md` for the canonical mapping between plugins and MCPs. The `ha-config-ha-mcp` plugin includes both `uvx ha-mcp@latest` and HTTP/add-on templates. Skill packs are handled as local curated skills plus optional upstream `homeassistant-ai/skills` references; upstream skill content is not vendored.
+See `docs/mcp-inventory.md` for the canonical mapping between plugins and MCPs. The `ha-config-ha-mcp` plugin includes both `uvx ha-mcp@latest` and HTTP/add-on templates. Skill packs are handled as local curated skills plus the upstream `homeassistant-ai/skills` submodule.
+
+`homeassistant-ai/skills` is included as a Git submodule at `plugins/homeassistant-ai-skills`. Clone with submodules when you want the upstream skill pack available from the checked-out marketplace:
+
+```bash
+git clone --recurse-submodules git@github.com:fnordpig/ha-agent-marketplace.git
+```
 
 ## Environment Variables
 

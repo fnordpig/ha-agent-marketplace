@@ -8,6 +8,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+MANIFEST_PATHS = (
+    Path(".codex-plugin/plugin.json"),
+    Path(".claude-plugin/plugin.json"),
+)
+INSTALL_POLICIES = {"AVAILABLE", "INSTALLED_BY_DEFAULT", "NOT_AVAILABLE"}
+AUTH_POLICIES = {"ON_INSTALL", "ON_USE"}
 
 
 def load_json(path: Path):
@@ -27,6 +33,13 @@ def main() -> int:
     for entry in data.get("plugins", []):
         name = entry.get("name", "<missing>")
         source = entry.get("source", {})
+        policy = entry.get("policy", {})
+        installation = policy.get("installation", "AVAILABLE") if isinstance(policy, dict) else "AVAILABLE"
+        authentication = policy.get("authentication", "ON_INSTALL") if isinstance(policy, dict) else "ON_INSTALL"
+        if installation not in INSTALL_POLICIES:
+            errors.append(f"{name}: unsupported installation policy: {installation}")
+        if authentication not in AUTH_POLICIES:
+            errors.append(f"{name}: unsupported authentication policy: {authentication}")
         path = source.get("path") if isinstance(source, dict) else None
         if not path:
             errors.append(f"{name}: missing source.path")
@@ -36,9 +49,12 @@ def main() -> int:
         if not plugin_dir.exists():
             errors.append(f"{name}: source path missing: {path}")
             continue
-        manifest_path = plugin_dir / ".codex-plugin" / "plugin.json"
-        if not manifest_path.exists():
-            errors.append(f"{name}: missing .codex-plugin/plugin.json")
+        manifest_path = next(
+            (plugin_dir / rel for rel in MANIFEST_PATHS if (plugin_dir / rel).exists()),
+            None,
+        )
+        if manifest_path is None:
+            errors.append(f"{name}: missing .codex-plugin/plugin.json or .claude-plugin/plugin.json")
             continue
         manifest = load_json(manifest_path)
         for field in ("skills", "mcpServers", "hooks"):
@@ -56,4 +72,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

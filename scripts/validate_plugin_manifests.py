@@ -13,7 +13,14 @@ WRITE_OK = {"ha-context-official", "ha-config-ha-mcp", "ha-repo-poweruser", "ha-
 
 def main() -> int:
     errors = []
-    for path in sorted(ROOT.glob("plugins/*/.codex-plugin/plugin.json")):
+    paths = list(ROOT.glob("plugins/*/.codex-plugin/plugin.json"))
+    paths.extend(ROOT.glob("plugins/*/.claude-plugin/plugin.json"))
+    seen = set()
+    for path in sorted(paths):
+        plugin_root = path.parents[1]
+        if plugin_root in seen:
+            continue
+        seen.add(plugin_root)
         manifest = json.loads(path.read_text(encoding="utf-8"))
         name = manifest.get("name", path.parents[1].name)
         missing = REQUIRED - set(manifest)
@@ -40,4 +47,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
