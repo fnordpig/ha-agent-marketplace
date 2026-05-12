@@ -14,13 +14,13 @@ npx codex-marketplace add fnordpig/ha-agent-marketplace/plugins/ha-foundation-sk
 
 MCP-backed plugins include templates under `docs/templates/mcp.json`. They are not named `.mcp.json` at plugin root because Codex auto-discovers and starts root `.mcp.json` files immediately, and placeholder URLs such as `${HOMEASSISTANT_URL}/api/mcp` will fail startup. Copy real URLs and tokens only into your local Codex config or environment, never into this repository.
 
-For the official Home Assistant context MCP, stay inside Codex and ask:
+For Home Assistant MCP setup, stay inside Codex and ask:
 
 ```text
-Set up ha-context-official for homeassistant.local using HOMEASSISTANT_TOKEN.
+Set up Home Assistant MCPs for http://homeassistant:8123 with the builder profile.
 ```
 
-The setup skill runs the plugin script with `uv run python` and writes only `bearer_token_env_var`, never the token value.
+The setup skill runs the shared plugin script with `uv run python`. It may write the non-secret Home Assistant URL, but it writes only token environment variable references, never token values.
 
 ## Upstream Home Assistant Skill Pack
 

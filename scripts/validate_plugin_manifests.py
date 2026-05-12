@@ -8,7 +8,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {"name", "version", "description"}
-WRITE_OK = {"ha-context-official", "ha-config-ha-mcp", "ha-repo-poweruser", "ha-deploy-vibecode", "ha-dashboard-designer", "ha-review-gates"}
+WRITE_OK = {
+    "ha-foundation-skills",
+    "ha-context-official",
+    "ha-config-ha-mcp",
+    "ha-repo-poweruser",
+    "ha-deploy-vibecode",
+    "ha-dashboard-designer",
+    "ha-review-gates",
+}
 
 
 def main() -> int:

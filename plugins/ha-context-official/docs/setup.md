@@ -12,16 +12,16 @@ Authentication may use OAuth where supported or a long-lived access token. This 
 
 ## In-Codex Setup
 
-Ask Codex to run the setup workflow:
+Use the shared setup workflow:
 
 ```text
-Set up ha-context-official for homeassistant.local using HOMEASSISTANT_TOKEN.
+Set up Home Assistant MCPs for http://homeassistant:8123 with the observer profile.
 ```
 
-The `ha-official-mcp-setup` skill runs:
+The shared `ha-mcp-setup` skill runs:
 
 ```bash
-uv run python plugins/ha-context-official/scripts/setup_official_mcp.py homeassistant.local
+uv run python plugins/ha-foundation-skills/scripts/setup_ha_mcps.py http://homeassistant:8123 --profile observer
 ```
 
 The script writes a user-level `mcp_servers.home-assistant-official` entry with `bearer_token_env_var = "HOMEASSISTANT_TOKEN"`. It does not write the token value and does not create plugin-root `.mcp.json`.

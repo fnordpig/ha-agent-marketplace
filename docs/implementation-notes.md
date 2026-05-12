@@ -14,7 +14,7 @@ Codex source inspection also shows marketplace add and plugin source materializa
 
 Codex starts MCP servers declared through a plugin manifest and auto-discovers a plugin-root `.mcp.json` file. Because this scaffold intentionally ships placeholder MCP URLs and environment variables, the Home Assistant plugin manifests do not declare `mcpServers`, and template files are stored under `docs/templates/mcp.json` rather than plugin root. Users copy those templates into local config after replacing placeholders with real URLs, tokens, and installed server commands.
 
-The MCP-backed plugins were bumped to `0.1.2` after moving root `.mcp.json` templates so Codex does not reuse stale plugin cache entries that still auto-started placeholder MCP servers. `ha-context-official` was later bumped to `0.1.3` to add the in-Codex setup script and setup skill.
+The MCP-backed plugins were bumped to `0.1.2` after moving root `.mcp.json` templates so Codex does not reuse stale plugin cache entries that still auto-started placeholder MCP servers. `ha-context-official` was later bumped to `0.1.3` for the first in-Codex setup workflow. The canonical setup workflow now lives in `ha-foundation-skills` `0.1.1` as `ha-mcp-setup`, which can configure observer, builder, deployer, or full profiles from inside Codex.
 
 Because Codex does not hydrate submodules during marketplace install, the `home-assistant-skills` marketplace entry uses a direct Git plugin source pinned to the upstream commit. The marketplace plugin name must match upstream `.claude-plugin/plugin.json` exactly, so it uses `home-assistant-skills` rather than the maintainer submodule directory name `homeassistant-ai-skills`.
 

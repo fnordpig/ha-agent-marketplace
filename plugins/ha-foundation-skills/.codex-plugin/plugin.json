@@ -1,19 +1,18 @@
 {
   "name": "ha-foundation-skills",
-  "version": "0.1.0",
-  "description": "Instruction-only Home Assistant best-practice skills.",
+  "version": "0.1.1",
+  "description": "Home Assistant best-practice skills and shared MCP setup workflow.",
   "author": {"name": "fnordpig"},
   "license": "MIT",
   "keywords": ["home-assistant", "skills", "automation"],
   "skills": "./skills",
   "interface": {
     "displayName": "Home Assistant Foundation Skills",
-    "shortDescription": "Best-practice guidance for Home Assistant configuration work.",
-    "longDescription": "Instruction-only skills for safe automation, helper, template, entity refactor, backup, and review workflows.",
+    "shortDescription": "Best-practice guidance and shared MCP setup for Home Assistant.",
+    "longDescription": "Skills for safe automation, helper, template, entity refactor, backup, review workflows, and an explicit setup script for Home Assistant MCP profiles.",
     "developerName": "fnordpig",
     "category": "Developer Tools",
-    "capabilities": ["Read"],
+    "capabilities": ["Read", "Write"],
     "defaultPrompt": ["Use Home Assistant foundation skills to review this automation."]
   }
 }
-
