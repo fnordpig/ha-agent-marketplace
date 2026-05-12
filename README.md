@@ -16,10 +16,10 @@ For Claude Code, use the shared `SKILL.md` content and the MCP snippets in `docs
 
 ## Profiles
 
-- Safe Observer: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-context-official`
-- Builder: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-config-ha-mcp`, `ha-dashboard-designer`, `ha-review-gates`
-- Power User: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-config-ha-mcp`, `ha-repo-poweruser`, `ha-dashboard-designer`, `ha-review-gates`
-- Live Deployer: `ha-foundation-skills`, optional `homeassistant-ai-skills`, `ha-deploy-vibecode`, `ha-review-gates`
+- Safe Observer: `ha-foundation-skills`, optional `home-assistant-skills`, `ha-context-official`
+- Builder: `ha-foundation-skills`, optional `home-assistant-skills`, `ha-config-ha-mcp`, `ha-dashboard-designer`, `ha-review-gates`
+- Power User: `ha-foundation-skills`, optional `home-assistant-skills`, `ha-config-ha-mcp`, `ha-repo-poweruser`, `ha-dashboard-designer`, `ha-review-gates`
+- Live Deployer: `ha-foundation-skills`, optional `home-assistant-skills`, `ha-deploy-vibecode`, `ha-review-gates`
 - Full Power: all plugins
 
 ## MCP And Skill Inventory

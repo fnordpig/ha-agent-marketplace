@@ -11,7 +11,7 @@
       "category": "Developer Tools"
     },
     {
-      "name": "homeassistant-ai-skills",
+      "name": "home-assistant-skills",
       "source": {
         "source": "url",
         "url": "https://github.com/homeassistant-ai/skills.git",

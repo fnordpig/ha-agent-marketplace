@@ -12,7 +12,7 @@ Codex source inspection shows the plugin manifest loader also accepts `.claude-p
 
 Codex source inspection also shows marketplace add and plugin source materialization use plain `git clone`, not recursive submodule checkout. Users cloning this marketplace from Git should run `git submodule update --init --recursive` or clone with `--recurse-submodules` if they want `plugins/homeassistant-ai-skills` populated.
 
-Because Codex does not hydrate submodules during marketplace install, the `homeassistant-ai-skills` marketplace entry uses a direct Git plugin source pinned to the upstream commit. The submodule remains for maintainers and local review only.
+Because Codex does not hydrate submodules during marketplace install, the `home-assistant-skills` marketplace entry uses a direct Git plugin source pinned to the upstream commit. The marketplace plugin name must match upstream `.claude-plugin/plugin.json` exactly, so it uses `home-assistant-skills` rather than the maintainer submodule directory name `homeassistant-ai-skills`.
 
 ## Claude Code Compatibility Notes
 
