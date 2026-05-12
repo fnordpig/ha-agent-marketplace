@@ -6,7 +6,6 @@
   "license": "MIT",
   "keywords": ["home-assistant", "deploy", "vibecode", "mcp"],
   "skills": "./skills",
-  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "HA Vibecode Deployer",
     "shortDescription": "High-privilege HA deployment profile with rollback policy.",
@@ -17,4 +16,3 @@
     "defaultPrompt": ["Prepare a Home Assistant deployment plan with backup, validation, and rollback notes."]
   }
 }
-

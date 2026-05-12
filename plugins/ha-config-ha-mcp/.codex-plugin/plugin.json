@@ -6,7 +6,6 @@
   "license": "MIT",
   "keywords": ["home-assistant", "mcp", "configuration"],
   "skills": "./skills",
-  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "HA Config MCP",
     "shortDescription": "Configuration authoring via ha-mcp with safety policy.",
@@ -17,4 +16,3 @@
     "defaultPrompt": ["Use ha-mcp to propose Home Assistant configuration changes with a diff summary."]
   }
 }
-

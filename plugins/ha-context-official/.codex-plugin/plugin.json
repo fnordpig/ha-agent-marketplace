@@ -6,7 +6,6 @@
   "license": "MIT",
   "keywords": ["home-assistant", "mcp", "official"],
   "skills": "./skills",
-  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "HA Official Context MCP",
     "shortDescription": "Low-risk official Home Assistant MCP profile.",
@@ -17,4 +16,3 @@
     "defaultPrompt": ["Use official Home Assistant MCP context. Do not modify configuration."]
   }
 }
-

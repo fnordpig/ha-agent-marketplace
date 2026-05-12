@@ -19,5 +19,4 @@ Current bridge docs use:
 }
 ```
 
-Never commit the real agent key. This is a high-privilege profile.
-
+Never commit the real agent key. This is a high-privilege profile. The bundled `.mcp.json` is intentionally not auto-declared by the plugin manifest; enable it only after the HA-side Vibecode Agent is installed, reachable, and backed by an explicit deployment approval workflow.
