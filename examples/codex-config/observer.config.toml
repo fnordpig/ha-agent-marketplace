@@ -1,0 +1,9 @@
+# Example only. Put real values in your local Codex config, not this repository.
+
+[plugins]
+enabled = ["ha-foundation-skills", "ha-context-official"]
+
+[mcp_servers.home-assistant-official]
+type = "http"
+url = "https://YOUR_HOME_ASSISTANT_URL/api/mcp"
+

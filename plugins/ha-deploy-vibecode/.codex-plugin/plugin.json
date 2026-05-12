@@ -1,0 +1,20 @@
+{
+  "name": "ha-deploy-vibecode",
+  "version": "0.1.0",
+  "description": "High-privilege deployer profile for Coolver HA Vibecode Agent.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "deploy", "vibecode", "mcp"],
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "HA Vibecode Deployer",
+    "shortDescription": "High-privilege HA deployment profile with rollback policy.",
+    "longDescription": "Templates and safety skills for Coolver HA Vibecode Agent and @coolver/home-assistant-mcp.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["Prepare a Home Assistant deployment plan with backup, validation, and rollback notes."]
+  }
+}
+

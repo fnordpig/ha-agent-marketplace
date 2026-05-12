@@ -1,0 +1,20 @@
+{
+  "name": "ha-context-official",
+  "version": "0.1.0",
+  "description": "Official Home Assistant MCP context and exposed-entity control profile.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "mcp", "official"],
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "HA Official Context MCP",
+    "shortDescription": "Low-risk official Home Assistant MCP profile.",
+    "longDescription": "Templates and skills for the official Home Assistant MCP Server integration at /api/mcp.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["Use official Home Assistant MCP context. Do not modify configuration."]
+  }
+}
+

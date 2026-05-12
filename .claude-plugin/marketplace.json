@@ -1,0 +1,15 @@
+{
+  "name": "ha-agent-marketplace-claude-compat",
+  "primaryTarget": "Codex",
+  "compatibilityNote": "Claude Code compatibility is provided through shared SKILL.md content and documented MCP snippets. This catalog does not imply unsupported Claude plugin behavior.",
+  "plugins": [
+    {"name": "ha-foundation-skills", "source": "./plugins/ha-foundation-skills"},
+    {"name": "ha-context-official", "source": "./plugins/ha-context-official"},
+    {"name": "ha-config-ha-mcp", "source": "./plugins/ha-config-ha-mcp"},
+    {"name": "ha-repo-poweruser", "source": "./plugins/ha-repo-poweruser"},
+    {"name": "ha-deploy-vibecode", "source": "./plugins/ha-deploy-vibecode"},
+    {"name": "ha-dashboard-designer", "source": "./plugins/ha-dashboard-designer"},
+    {"name": "ha-review-gates", "source": "./plugins/ha-review-gates"}
+  ]
+}
+

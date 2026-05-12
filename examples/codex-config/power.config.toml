@@ -1,0 +1,9 @@
+# Example only. Do not commit real tokens or URLs.
+
+[plugins]
+enabled = ["ha-foundation-skills", "ha-config-ha-mcp", "ha-repo-poweruser", "ha-dashboard-designer", "ha-review-gates"]
+
+[mcp_servers.home-assistant-config]
+type = "http"
+url = "https://YOUR_HA_MCP_URL"
+

@@ -1,0 +1,20 @@
+{
+  "name": "ha-review-gates",
+  "version": "0.1.0",
+  "description": "Validation, review checklists, and conservative hook templates for Home Assistant changes.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "review", "hooks", "safety"],
+  "skills": "./skills",
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "HA Review Gates",
+    "shortDescription": "Safety reviews and hook templates for HA configuration work.",
+    "longDescription": "Review skills and conservative hook scripts that warn on sensitive Home Assistant operations.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["Review this Home Assistant change for destructive operations and rollback coverage."]
+  }
+}
+

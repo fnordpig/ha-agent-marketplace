@@ -1,0 +1,19 @@
+{
+  "name": "ha-foundation-skills",
+  "version": "0.1.0",
+  "description": "Instruction-only Home Assistant best-practice skills.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "skills", "automation"],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "Home Assistant Foundation Skills",
+    "shortDescription": "Best-practice guidance for Home Assistant configuration work.",
+    "longDescription": "Instruction-only skills for safe automation, helper, template, entity refactor, backup, and review workflows.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read"],
+    "defaultPrompt": ["Use Home Assistant foundation skills to review this automation."]
+  }
+}
+

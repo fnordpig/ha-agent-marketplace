@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "home-assistant-vibecode": {
+      "command": "npx",
+      "args": ["-y", "@coolver/home-assistant-mcp@latest"],
+      "env": {
+        "HA_AGENT_URL": "${HA_AGENT_URL}",
+        "HA_AGENT_KEY": "${HA_AGENT_KEY}"
+      }
+    }
+  }
+}
+

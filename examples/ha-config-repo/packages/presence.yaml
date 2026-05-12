@@ -1,0 +1,26 @@
+input_select:
+  house_mode:
+    name: House Mode
+    options:
+      - Home
+      - Away
+      - Night
+      - Guest
+
+input_boolean:
+  guest_mode:
+    name: Guest Mode
+
+automation:
+  - id: agent_presence_guest_mode_note
+    alias: Agent - Presence mode note
+    trigger:
+      - platform: state
+        entity_id: person.example_resident
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.house_mode
+        data:
+          option: Home
+

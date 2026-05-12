@@ -1,0 +1,20 @@
+{
+  "name": "ha-config-ha-mcp",
+  "version": "0.1.0",
+  "description": "Broad Home Assistant configuration authoring profile for homeassistant-ai/ha-mcp.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "mcp", "configuration"],
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "HA Config MCP",
+    "shortDescription": "Configuration authoring via ha-mcp with safety policy.",
+    "longDescription": "Templates and policy for homeassistant-ai/ha-mcp or equivalent broad Home Assistant configuration MCP servers.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["Use ha-mcp to propose Home Assistant configuration changes with a diff summary."]
+  }
+}
+

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "home-assistant-config": {
+      "type": "http",
+      "url": "${HA_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${HA_MCP_TOKEN}"
+      }
+    }
+  }
+}
+

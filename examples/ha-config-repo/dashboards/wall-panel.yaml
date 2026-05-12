@@ -1,0 +1,17 @@
+title: Example Wall Panel
+views:
+  - title: Hallway
+    path: hallway
+    cards:
+      - type: entities
+        title: Hallway
+        entities:
+          - binary_sensor.hallway_motion
+          - light.hallway
+          - input_boolean.guest_mode
+          - input_select.house_mode
+      - type: glance
+        title: Resident
+        entities:
+          - person.example_resident
+

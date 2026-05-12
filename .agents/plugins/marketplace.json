@@ -1,0 +1,51 @@
+{
+  "name": "ha-agent-marketplace",
+  "interface": {
+    "displayName": "Home Assistant Agent Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "ha-foundation-skills",
+      "source": {"source": "local", "path": "./plugins/ha-foundation-skills"},
+      "policy": {"installation": "AVAILABLE", "authentication": "NONE"},
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ha-context-official",
+      "source": {"source": "local", "path": "./plugins/ha-context-official"},
+      "policy": {"installation": "AVAILABLE", "authentication": "ON_FIRST_USE"},
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ha-config-ha-mcp",
+      "source": {"source": "local", "path": "./plugins/ha-config-ha-mcp"},
+      "policy": {"installation": "AVAILABLE", "authentication": "ON_FIRST_USE"},
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ha-repo-poweruser",
+      "source": {"source": "local", "path": "./plugins/ha-repo-poweruser"},
+      "policy": {"installation": "AVAILABLE", "authentication": "NONE"},
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ha-deploy-vibecode",
+      "source": {"source": "local", "path": "./plugins/ha-deploy-vibecode"},
+      "policy": {"installation": "AVAILABLE", "authentication": "ON_FIRST_USE"},
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ha-dashboard-designer",
+      "source": {"source": "local", "path": "./plugins/ha-dashboard-designer"},
+      "policy": {"installation": "AVAILABLE", "authentication": "NONE"},
+      "category": "Developer Tools"
+    },
+    {
+      "name": "ha-review-gates",
+      "source": {"source": "local", "path": "./plugins/ha-review-gates"},
+      "policy": {"installation": "AVAILABLE", "authentication": "NONE"},
+      "category": "Developer Tools"
+    }
+  ]
+}
+

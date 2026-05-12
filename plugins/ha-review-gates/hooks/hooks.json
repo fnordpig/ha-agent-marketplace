@@ -1,0 +1,28 @@
+{
+  "description": "Conservative Home Assistant warning hooks.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/pre_tool_use_policy.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/post_turn_summary.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
+

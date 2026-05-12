@@ -1,0 +1,19 @@
+{
+  "name": "ha-dashboard-designer",
+  "version": "0.1.0",
+  "description": "Lovelace and YAML dashboard design skills for Home Assistant.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "dashboard", "lovelace"],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "HA Dashboard Designer",
+    "shortDescription": "Dashboard-specific guidance for YAML, wall, and mobile layouts.",
+    "longDescription": "Skills for maintainable Home Assistant dashboards organized around rooms, people, modes, and exceptions.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["Design a Home Assistant YAML dashboard for a wall tablet."]
+  }
+}
+

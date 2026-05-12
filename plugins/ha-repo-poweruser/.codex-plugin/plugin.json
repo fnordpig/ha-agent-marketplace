@@ -1,0 +1,19 @@
+{
+  "name": "ha-repo-poweruser",
+  "version": "0.1.0",
+  "description": "Repo-first Home Assistant YAML refactoring workflow.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "yaml", "refactor"],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "HA Repo Power User",
+    "shortDescription": "Git/YAML workflow helpers for serious HA refactors.",
+    "longDescription": "Skills and stdlib scripts for entity scanning, dependency analysis, and agent-managed Home Assistant repo layouts.",
+    "developerName": "fnordpig",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["Scan this Home Assistant config repo for stale entity references."]
+  }
+}
+
