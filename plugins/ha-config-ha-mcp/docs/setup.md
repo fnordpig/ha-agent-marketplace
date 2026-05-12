@@ -4,7 +4,7 @@ This plugin references `homeassistant-ai/ha-mcp`.
 
 Observed install models include `uvx`, Docker, Home Assistant add-on, and a companion custom component for beta filesystem/YAML tools. Current docs use environment variables such as `HOMEASSISTANT_URL` and `HOMEASSISTANT_TOKEN` for local stdio mode, and add-on generated HTTP URLs for add-on mode.
 
-The bundled `.mcp.json` includes two canonical templates. They are intentionally not auto-declared by this plugin's manifest because Codex starts declared MCP servers immediately:
+The bundled `docs/templates/mcp.json` file includes two canonical templates. It is intentionally not named `.mcp.json` at plugin root because Codex starts root MCP files immediately:
 
 - `home-assistant-config-uvx`: stdio launch with `uvx ha-mcp@latest`.
 - `home-assistant-config-http`: HTTP/add-on/proxy endpoint using `HA_MCP_URL`.

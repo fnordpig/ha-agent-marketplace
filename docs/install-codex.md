@@ -12,7 +12,7 @@ For one plugin:
 npx codex-marketplace add fnordpig/ha-agent-marketplace/plugins/ha-foundation-skills --plugin --project
 ```
 
-MCP-backed plugins include `.mcp.json` templates, but those templates are not declared from plugin manifests by default. Codex starts declared MCP servers immediately, and placeholder URLs such as `${HOMEASSISTANT_URL}/api/mcp` will fail startup. Copy real URLs and tokens only into your local Codex config or environment, never into this repository.
+MCP-backed plugins include templates under `docs/templates/mcp.json`. They are not named `.mcp.json` at plugin root because Codex auto-discovers and starts root `.mcp.json` files immediately, and placeholder URLs such as `${HOMEASSISTANT_URL}/api/mcp` will fail startup. Copy real URLs and tokens only into your local Codex config or environment, never into this repository.
 
 ## Upstream Home Assistant Skill Pack
 
