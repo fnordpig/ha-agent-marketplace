@@ -22,6 +22,10 @@ For Claude Code, use the shared `SKILL.md` content and the MCP snippets in `docs
 - Live Deployer: `ha-foundation-skills`, `ha-deploy-vibecode`, `ha-review-gates`
 - Full Power: all plugins
 
+## MCP And Skill Inventory
+
+See `docs/mcp-inventory.md` for the canonical mapping between plugins and MCPs. The `ha-config-ha-mcp` plugin includes both `uvx ha-mcp@latest` and HTTP/add-on templates. Skill packs are handled as local curated skills plus optional upstream `homeassistant-ai/skills` references; upstream skill content is not vendored.
+
 ## Environment Variables
 
 Templates reference placeholders only:
@@ -47,4 +51,3 @@ python3 scripts/validate_plugin_manifests.py
 python3 scripts/lint_skills.py
 python3 scripts/scan_ha_entity_refs.py --root examples/ha-config-repo --summary
 ```
-

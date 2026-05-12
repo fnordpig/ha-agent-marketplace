@@ -1,6 +1,14 @@
 {
   "mcpServers": {
-    "home-assistant-config": {
+    "home-assistant-config-uvx": {
+      "command": "uvx",
+      "args": ["ha-mcp@latest"],
+      "env": {
+        "HOMEASSISTANT_URL": "${HOMEASSISTANT_URL}",
+        "HOMEASSISTANT_TOKEN": "${HOMEASSISTANT_TOKEN}"
+      }
+    },
+    "home-assistant-config-http": {
       "type": "http",
       "url": "${HA_MCP_URL}",
       "headers": {
@@ -9,4 +17,3 @@
     }
   }
 }
-

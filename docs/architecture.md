@@ -12,3 +12,4 @@ This marketplace is layered so users can choose the least privilege profile that
 
 Upstream projects are integration references. They are not vendored.
 
+See `docs/mcp-inventory.md` for the canonical MCP and skill-pack mapping for each marketplace plugin.
