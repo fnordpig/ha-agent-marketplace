@@ -1,6 +1,6 @@
 {
   "name": "ha-review-gates",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Validation, review checklists, and conservative hook templates for Home Assistant changes.",
   "author": {"name": "fnordpig"},
   "license": "MIT",

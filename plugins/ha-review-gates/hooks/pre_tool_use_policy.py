@@ -13,6 +13,15 @@ DANGEROUS = [
 ]
 
 
+def _pre_tool_use_context(message: str) -> str:
+    return json.dumps({
+        "hookSpecificOutput": {
+            "hookEventName": "PreToolUse",
+            "additionalContext": message,
+        },
+    })
+
+
 def main() -> int:
     raw = sys.stdin.read()
     haystack = raw.lower()
@@ -24,12 +33,9 @@ def main() -> int:
     hits = [term for term in DANGEROUS if term in haystack]
     if hits:
         message = "Home Assistant safety warning: sensitive operation detected: " + ", ".join(hits)
-        print(json.dumps({"decision": "warn", "message": message}))
-    else:
-        print(json.dumps({"decision": "allow", "message": "No Home Assistant safety warning."}))
+        print(_pre_tool_use_context(message))
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
