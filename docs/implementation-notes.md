@@ -6,7 +6,7 @@ Current Codex marketplace documentation says the only required plugin file is `.
 
 Current Codex source accepts marketplace authentication policies `ON_INSTALL` and `ON_USE`. The earlier prompt's `NONE` and `ON_FIRST_USE` names were normalized to current Codex values.
 
-Codex docs show `hooks.json` at the plugin root. This repository keeps hook scripts in `plugins/ha-review-gates/hooks/` and references `./hooks/hooks.json` from the manifest.
+Codex docs show `hooks.json` at the plugin root. This repository keeps hook scripts in `plugins/ha-review-gates/hooks/` as opt-in templates, but `ha-review-gates` no longer declares the hooks path in its plugin manifest. A stale or incomplete plugin cache can otherwise make a missing hook script block every tool call before the agent can repair it. The hook template commands are fail-open for the same reason.
 
 Codex source inspection shows the plugin manifest loader also accepts `.claude-plugin/plugin.json`, and it discovers a default `skills/` directory even when the manifest does not declare a `skills` path. That makes `homeassistant-ai/skills` usable as a plugin submodule without modifying upstream files.
 
@@ -15,6 +15,8 @@ Codex source inspection also shows marketplace add and plugin source materializa
 Codex starts MCP servers declared through a plugin manifest and auto-discovers a plugin-root `.mcp.json` file. Because this scaffold intentionally ships placeholder MCP URLs and environment variables, the Home Assistant plugin manifests do not declare `mcpServers`, and template files are stored under `docs/templates/mcp.json` rather than plugin root. Users copy those templates into local config after replacing placeholders with real URLs, tokens, and installed server commands.
 
 The MCP-backed plugins were bumped to `0.1.2` after moving root `.mcp.json` templates so Codex does not reuse stale plugin cache entries that still auto-started placeholder MCP servers. `ha-context-official` was later bumped to `0.1.3` for the first in-Codex setup workflow. The canonical setup workflow now lives in `ha-foundation-skills` `0.1.1` as `ha-mcp-setup`, which can configure observer, builder, deployer, or full profiles from inside Codex.
+
+`ha-review-gates` was bumped to `0.1.3` when hook auto-registration was removed from the manifest. The review skills remain normal plugin content; hooks remain local templates for users who explicitly opt in.
 
 Because Codex does not hydrate submodules during marketplace install, the `home-assistant-skills` marketplace entry uses a direct Git plugin source pinned to the upstream commit. The marketplace plugin name must match upstream `.claude-plugin/plugin.json` exactly, so it uses `home-assistant-skills` rather than the maintainer submodule directory name `homeassistant-ai-skills`.
 

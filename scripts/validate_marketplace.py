@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -14,6 +15,7 @@ MANIFEST_PATHS = (
 )
 INSTALL_POLICIES = {"AVAILABLE", "INSTALLED_BY_DEFAULT", "NOT_AVAILABLE"}
 AUTH_POLICIES = {"ON_INSTALL", "ON_USE"}
+PLUGIN_ROOT_REF = re.compile(r"\$\{(?:CLAUDE|CODEX)_PLUGIN_ROOT\}/([^\"'\s]+)")
 
 
 def load_json(path: Path):
@@ -23,6 +25,33 @@ def load_json(path: Path):
 
 def rel_exists(base: Path, rel: str) -> bool:
     return (base / rel).resolve().exists()
+
+
+def iter_hook_commands(value):
+    if isinstance(value, dict):
+        command = value.get("command")
+        if isinstance(command, str):
+            yield command
+        for item in value.values():
+            yield from iter_hook_commands(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from iter_hook_commands(item)
+
+
+def validate_hook_template(name: str, plugin_dir: Path, errors: list[str]) -> None:
+    hooks_path = plugin_dir / "hooks" / "hooks.json"
+    if not hooks_path.exists():
+        return
+    try:
+        hooks = load_json(hooks_path)
+    except json.JSONDecodeError as exc:
+        errors.append(f"{name}: invalid hooks/hooks.json: {exc}")
+        return
+    for command in iter_hook_commands(hooks):
+        for rel in PLUGIN_ROOT_REF.findall(command):
+            if not (plugin_dir / rel).exists():
+                errors.append(f"{name}: hook command references missing file: {rel}")
 
 
 def validate_local_plugin(name: str, root: Path, path: str, errors: list[str]) -> None:
@@ -43,6 +72,7 @@ def validate_local_plugin(name: str, root: Path, path: str, errors: list[str]) -
         rel = manifest.get(field)
         if rel and not rel_exists(plugin_dir, rel):
             errors.append(f"{name}: {field} path missing: {rel}")
+    validate_hook_template(name, plugin_dir, errors)
 
 
 def main() -> int:

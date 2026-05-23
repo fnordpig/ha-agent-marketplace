@@ -13,7 +13,7 @@ Codex starts MCP servers declared by an installed plugin manifest and also auto-
 | `ha-repo-poweruser` | Local stdlib repo scanner plus `ha-pilot` concept reference | None | Local scripts | `uv run python scripts/scan_ha_entity_refs.py` | `ha-pilot` repo was unavailable to inspect; no MCP template is shipped for it. |
 | `ha-deploy-vibecode` | Coolver `@coolver/home-assistant-mcp` bridge to HA Vibecode Agent | `plugins/ha-deploy-vibecode/docs/templates/mcp.json` | stdio | `npx -y @coolver/home-assistant-mcp@latest` | Canonical deployer bridge uses `HA_AGENT_URL` and `HA_AGENT_KEY`. Opt in only when the HA-side agent is installed and reachable. |
 | `ha-dashboard-designer` | Local dashboard skills; optional ha-mcp dashboard tools through `ha-config-ha-mcp` | None | Skill files | `plugins/ha-dashboard-designer/skills/*/SKILL.md` | Dashboard writes should go through repo files or `ha-config-ha-mcp`, not this plugin alone. |
-| `ha-review-gates` | Local review skills and hook templates | None | Hooks/scripts | `plugins/ha-review-gates/hooks/hooks.json` | No MCP server; protects workflows around other plugins. |
+| `ha-review-gates` | Local review skills and optional hook templates | None | Optional local hooks/scripts | `plugins/ha-review-gates/hooks/hooks.json` | No MCP server; review skills are installed normally; hooks are opt-in templates. |
 
 ## Skill Packs
 
