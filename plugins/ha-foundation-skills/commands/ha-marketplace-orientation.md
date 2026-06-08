@@ -42,6 +42,8 @@ Then classify the upstream grounding needed:
 
 Load only the narrow skills required for the classified hub. Read only the upstream reference files needed for the grounding category. If the request is risky, include the appropriate review-gate skill.
 
+If the task is setup/profile selection, run the **MCP Setup Decision** elicitation from the orientation skill (ask the local-vs-remote questions) before recommending a transport.
+
 ## Step 4 - Answer With A Route
 
 Respond with:

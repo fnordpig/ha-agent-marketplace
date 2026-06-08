@@ -20,6 +20,8 @@ graph:
     - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/dashboard-guide.md
     - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/template-guidelines.md
     - docs/skill-knowledge-graph.md
+    - docs/mcp-inventory.md
+    - plugins/ha-config-ha-mcp/docs/setup.md
 ---
 
 # Home Assistant Marketplace Orientation
@@ -64,13 +66,31 @@ This is the map skill. It does not replace the narrower skills or the upstream `
 
 ## Routing Rules
 
-1. If the user wants to connect MCPs, use `ha-mcp-setup`.
+1. If the user wants to connect MCPs, run the **MCP Setup Decision** elicitation below first, then use `ha-mcp-setup` (local) or the HTTP template (remote) per the result.
 2. If the user wants to inspect or control exposed devices, use `ha-official-mcp-context`.
 3. If the user wants to author configuration through live Home Assistant, use `ha-mcp-config-author` and classify tools with `ha-mcp-tool-policy`.
 4. If the user wants to change a Home Assistant repo, use `ha-repo-refactor` before using live write tools.
 5. If the user wants dashboards, route through the dashboard hub and use `ha-mcp-config-author` only when applying changes live.
 6. If the user wants deployment, use deployer safety before any deploy tool.
 7. If the operation deletes, removes, restarts, renames, touches registry metadata, exposes secrets, or edits `.storage`, route through review gates.
+
+## MCP Setup Decision
+
+Before connecting `ha-config-ha-mcp`, help the user pick a transport — don't guess. `ha-mcp` is one server with two modes: **local** (`uvx` stdio, default) or **remote** (HTTP server, usually the HA add-on). Elicit these first (Claude Code: `AskUserQuestion`; Codex: ask directly):
+
+1. One machine/user, or several clients/people?
+2. Agent on the same LAN as HA, or needs access from outside (cloud/web/mobile)?
+3. Can the client run a local `uvx` command, or HTTP only?
+4. Is `uv`/Python available on the agent host?
+5. Need HA-host-side tools (the companion custom component's beta filesystem/YAML tools)?
+6. Version: always-latest, or pinned/central?
+
+Decide:
+
+- **Local `uvx` stdio (default)** — one machine, same network as HA, client can run a stdio command, `uv` available. Vars `HOMEASSISTANT_URL` + `HOMEASSISTANT_TOKEN`. Route to `ha-mcp-setup`.
+- **Remote HTTP / add-on** — if any apply: multiple clients/users, access from outside the LAN, HTTP-only client, no `uv` on the host, you need HA-host-side tools, or you want a pinned central version. Vars `HA_MCP_URL` + `HA_MCP_TOKEN`. No auto-setup script; copy the `home-assistant-config-http` template.
+
+`HOMEASSISTANT_URL` is HA itself; `HA_MCP_URL` is the `ha-mcp` server (the add-on when ha-mcp runs inside HA). Full detail and the transport table: `plugins/ha-config-ha-mcp/docs/setup.md` (**Transport Modes**). The official server (`ha-official-mcp-context`) is a separate `/api/mcp` OAuth endpoint and runs alongside either mode.
 
 ## Safety
 
