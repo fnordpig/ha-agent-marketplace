@@ -12,9 +12,9 @@ From a clone of this repository (local source), or by repo reference once publis
 # or, once published to GitHub
 /plugin marketplace add fnordpig/ha-agent-marketplace
 
-/plugin marketplace list        # confirm "ha-agent-marketplace-claude-compat" is present
+/plugin marketplace list        # confirm "ha-agent-marketplace" is present
 /plugin                         # browse the 8 plugins interactively
-/plugin install ha-foundation-skills@ha-agent-marketplace-claude-compat
+/plugin install ha-foundation-skills@ha-agent-marketplace
 ```
 
 Restart Claude Code after installing so skills, commands, and any hooks are picked up.

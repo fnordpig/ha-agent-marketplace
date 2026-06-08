@@ -1,5 +1,5 @@
 {
-  "name": "ha-agent-marketplace-claude-compat",
+  "name": "ha-agent-marketplace",
   "owner": {"name": "fnordpig"},
   "metadata": {
     "description": "Claude Code-compatible catalog of the Codex-first Home Assistant agent marketplace. Each plugin ships a .claude-plugin/plugin.json alongside its .codex-plugin/plugin.json; skill content and MCP setup are shared across both hosts. MCP servers and review-gate hooks are opt-in templates, not auto-started by install."

@@ -18,7 +18,7 @@ For Claude Code, the plugins install natively from the `.claude-plugin/marketpla
 
 ```bash
 /plugin marketplace add fnordpig/ha-agent-marketplace
-/plugin install ha-foundation-skills@ha-agent-marketplace-claude-compat
+/plugin install ha-foundation-skills@ha-agent-marketplace
 ```
 
 See `docs/install-claude-code.md` for the full flow plus MCP snippets. MCP servers and review-gate hooks are opt-in on both hosts and are not auto-started by install.
