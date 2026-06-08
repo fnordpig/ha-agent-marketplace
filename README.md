@@ -63,10 +63,12 @@ The MCP templates reference placeholders only — set the real values in your lo
 |---|---|---|
 | `HOMEASSISTANT_URL` | `ha-config-ha-mcp` — `uvx ha-mcp@latest` (stdio) | Base URL of your HA instance, e.g. `http://homeassistant:8123`. |
 | `HOMEASSISTANT_TOKEN` | `ha-config-ha-mcp` — `uvx ha-mcp@latest` (stdio) | Long-lived access token (HA → your user profile → Security → Long-lived access tokens). |
-| `HA_MCP_URL` | `ha-config-ha-mcp` — HTTP / add-on / proxy mode | URL of a remotely-hosted `ha-mcp` HTTP endpoint, when you are not running the local `uvx` client. |
-| `HA_MCP_TOKEN` | `ha-config-ha-mcp` — HTTP / add-on / proxy mode | Auth token for that HTTP `ha-mcp` endpoint. |
+| `HA_MCP_URL` | `ha-config-ha-mcp` — HTTP mode | Endpoint of the `ha-mcp` **server**, typically the ha-mcp Home Assistant add-on (ha-mcp running *inside* HA), or a standalone container/proxy. Not the same as `HOMEASSISTANT_URL`. Unused in `uvx` stdio mode. |
+| `HA_MCP_TOKEN` | `ha-config-ha-mcp` — HTTP mode | Bearer token for that `ha-mcp` HTTP server. |
 | `HA_AGENT_URL` | `ha-deploy-vibecode` — `@coolver/home-assistant-mcp` | URL of the Coolver HA Vibecode Agent bridge. |
 | `HA_AGENT_KEY` | `ha-deploy-vibecode` — `@coolver/home-assistant-mcp` | API key for the Vibecode Agent bridge. |
+
+`ha-mcp` (the `ha-config-ha-mcp` plugin) runs in one of two transport modes — local `uvx` stdio vs an HTTP server such as the HA add-on — and that choice determines which variables apply. See `plugins/ha-config-ha-mcp/docs/setup.md` (**Transport Modes**) for the full explanation of stdio vs HTTP and the `HOMEASSISTANT_URL` vs `HA_MCP_URL` distinction.
 
 The official Home Assistant MCP Server (`ha-context-official`) is reached at `https://<host>/api/mcp` and authenticates via OAuth in Claude Code — it does not use these tokens. See `docs/install-claude-code.md`.
 

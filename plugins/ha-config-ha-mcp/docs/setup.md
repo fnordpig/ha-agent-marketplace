@@ -2,14 +2,27 @@
 
 This plugin references `homeassistant-ai/ha-mcp`.
 
-Observed install models include `uvx`, Docker, Home Assistant add-on, webhook/proxy HTTP access, and a companion custom component for beta filesystem/YAML tools. Current docs use environment variables such as `HOMEASSISTANT_URL` and `HOMEASSISTANT_TOKEN` for local stdio mode, and add-on generated HTTP URLs for add-on/proxy mode.
+## Transport Modes
 
-The bundled `docs/templates/mcp.json` file includes two canonical templates. It is intentionally not named `.mcp.json` at plugin root because Codex starts root MCP files immediately:
+`ha-mcp` is **one server that can run in two places**. Pick one mode — do not enable both unless you deliberately want two separate HA config clients. Both templates live in `docs/templates/mcp.json`.
 
-- `home-assistant-config-uvx`: stdio launch with `uvx ha-mcp@latest`.
-- `home-assistant-config-http`: HTTP/add-on/proxy endpoint using `HA_MCP_URL`.
+| Mode | Template entry | Where `ha-mcp` runs | Client config | Auth env vars |
+|---|---|---|---|---|
+| **stdio (local)** | `home-assistant-config-uvx` | Your agent host launches it on demand via `uvx ha-mcp@latest` | `command: uvx` | `HOMEASSISTANT_URL` + `HOMEASSISTANT_TOKEN` |
+| **HTTP (server)** | `home-assistant-config-http` | A long-running `ha-mcp` server — most commonly the **ha-mcp Home Assistant add-on running inside HA**, or a standalone Docker container / reverse proxy | `type: http`, `url: ${HA_MCP_URL}` | `Bearer ${HA_MCP_TOKEN}` |
 
-Put real `HA_MCP_URL`, `HA_MCP_TOKEN`, `HOMEASSISTANT_URL`, and `HOMEASSISTANT_TOKEN` values in local client configuration or environment, never in this repo. Do not enable both HTTP and `uvx` entries unless you intentionally want two separate HA config MCP clients.
+### The two URLs are not the same thing
+
+- `HOMEASSISTANT_URL` → **Home Assistant itself** (e.g. `http://homeassistant:8123`). Used **only in stdio mode**, where `ha-mcp` runs on your machine and needs to know where HA is.
+- `HA_MCP_URL` → **the `ha-mcp` server's own HTTP endpoint**. Used **only in HTTP mode**. When `ha-mcp` runs as the HA add-on it is *inside* HA, so this is the add-on-generated URL — you point at the add-on, not at `:8123/api/...`.
+
+Other install models (Docker, webhook/proxy, the companion custom component for beta filesystem/YAML tools) all reduce to one of the two modes above.
+
+Put real `HA_MCP_URL`, `HA_MCP_TOKEN`, `HOMEASSISTANT_URL`, and `HOMEASSISTANT_TOKEN` values in local client configuration or environment, never in this repo.
+
+### Why the template is not `.mcp.json`
+
+The bundled file is `docs/templates/mcp.json`, not a plugin-root `.mcp.json`, because both Claude Code and Codex auto-start a root MCP file on install. Keeping it under `docs/templates/` makes connection strictly opt-in: copy the entry you want into local config after replacing placeholders.
 
 ## In-Codex Setup
 
@@ -25,7 +38,11 @@ The shared `ha-mcp-setup` skill runs:
 uv run python plugins/ha-foundation-skills/scripts/setup_ha_mcps.py http://homeassistant:8123 --profile builder
 ```
 
-This configures `home-assistant-official` and `home-assistant-config-uvx`. The Home Assistant URL is written as non-secret MCP environment, and the token is referenced through `HOMEASSISTANT_TOKEN`.
+This configures `home-assistant-official` and `home-assistant-config-uvx` (**stdio mode only**). The Home Assistant URL is written as non-secret MCP environment, and the token is referenced through `HOMEASSISTANT_TOKEN`.
+
+The script does **not** configure HTTP mode. For the ha-mcp add-on / HTTP server, copy the `home-assistant-config-http` entry from `docs/templates/mcp.json` into local config and set `HA_MCP_URL` + `HA_MCP_TOKEN` yourself (see Transport Modes above).
+
+For Claude Code, there is no in-host setup script — use the `claude mcp add-json` snippets in `docs/install-claude-code.md` with the same two transport modes.
 
 ## Current Upstream Notes
 
