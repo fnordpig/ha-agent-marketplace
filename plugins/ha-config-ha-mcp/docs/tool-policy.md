@@ -8,3 +8,4 @@ Deletion, registry changes, file overwrite, file deletion, backup restore, resta
 
 Beta filesystem and YAML editing tools require upstream feature flags. Treat them as high risk.
 
+Current `homeassistant-ai/ha-mcp` includes per-tool approval policy support and auto-backups for write/destructive calls. Treat those as an additional guard, not permission to skip marketplace review gates. For config subentries, use `ha_get_integration` to inspect metadata/schema, `ha_config_set_helper(helper_type="config_subentry", ...)` to create or update, and `ha_remove_helpers_integrations(helper_type="config_subentry", ...)` only after explicit approval.

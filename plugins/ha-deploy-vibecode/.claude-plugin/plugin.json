@@ -1,0 +1,8 @@
+{
+  "name": "ha-deploy-vibecode",
+  "version": "0.1.4",
+  "description": "High-privilege deployer profile for Coolver HA Vibecode Agent.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "deploy", "vibecode", "mcp"]
+}

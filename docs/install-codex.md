@@ -3,13 +3,21 @@
 After this repository is published:
 
 ```bash
-npx codex-marketplace add fnordpig/ha-agent-marketplace --plugins --project
+codex plugin marketplace add fnordpig/ha-agent-marketplace --ref main
+codex plugin list --marketplace ha-agent-marketplace
 ```
 
-For one plugin:
+Install the plugins you want from the configured marketplace:
 
 ```bash
-npx codex-marketplace add fnordpig/ha-agent-marketplace/plugins/ha-foundation-skills --plugin --project
+codex plugin add ha-foundation-skills@ha-agent-marketplace
+codex plugin add ha-context-official@ha-agent-marketplace
+```
+
+For local development, add the working tree directly:
+
+```bash
+codex plugin marketplace add .
 ```
 
 MCP-backed plugins include templates under `docs/templates/mcp.json`. They are not named `.mcp.json` at plugin root because Codex auto-discovers and starts root `.mcp.json` files immediately, and placeholder URLs such as `${HOMEASSISTANT_URL}/api/mcp` will fail startup. Copy real URLs and tokens only into your local Codex config or environment, never into this repository.

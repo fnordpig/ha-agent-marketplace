@@ -40,18 +40,26 @@ def iter_hook_commands(value):
 
 
 def validate_hook_template(name: str, plugin_dir: Path, errors: list[str]) -> None:
-    hooks_path = plugin_dir / "hooks" / "hooks.json"
-    if not hooks_path.exists():
-        return
-    try:
-        hooks = load_json(hooks_path)
-    except json.JSONDecodeError as exc:
-        errors.append(f"{name}: invalid hooks/hooks.json: {exc}")
-        return
-    for command in iter_hook_commands(hooks):
-        for rel in PLUGIN_ROOT_REF.findall(command):
-            if not (plugin_dir / rel).exists():
-                errors.append(f"{name}: hook command references missing file: {rel}")
+    # Templates live under hooks/templates/ so Claude Code does not auto-load
+    # them on install (it only auto-discovers hooks/hooks.json). The legacy
+    # hooks/hooks.json path is still scanned for backward compatibility.
+    hook_paths = (
+        plugin_dir / "hooks" / "templates" / "hooks.json",
+        plugin_dir / "hooks" / "hooks.json",
+    )
+    for hooks_path in hook_paths:
+        if not hooks_path.exists():
+            continue
+        rel_label = hooks_path.relative_to(plugin_dir)
+        try:
+            hooks = load_json(hooks_path)
+        except json.JSONDecodeError as exc:
+            errors.append(f"{name}: invalid {rel_label}: {exc}")
+            continue
+        for command in iter_hook_commands(hooks):
+            for rel in PLUGIN_ROOT_REF.findall(command):
+                if not (plugin_dir / rel).exists():
+                    errors.append(f"{name}: hook command references missing file: {rel}")
 
 
 def validate_local_plugin(name: str, root: Path, path: str, errors: list[str]) -> None:

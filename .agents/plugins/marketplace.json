@@ -15,7 +15,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/homeassistant-ai/skills.git",
-        "sha": "237ff71091b5b791e869334a65cc5d98641a8376"
+        "sha": "a695a02e18ad8e2fc45f71f6796252d32fa1dc30"
       },
       "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
       "category": "Developer Tools"

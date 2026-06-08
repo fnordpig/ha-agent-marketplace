@@ -9,10 +9,19 @@ It is not a casual device-control plugin pack, and it does not connect to a live
 For Codex, install from this repository marketplace once published:
 
 ```bash
-npx codex-marketplace add fnordpig/ha-agent-marketplace --plugins --project
+codex plugin marketplace add fnordpig/ha-agent-marketplace --ref main
+codex plugin list --marketplace ha-agent-marketplace
+codex plugin add ha-foundation-skills@ha-agent-marketplace
 ```
 
-For Claude Code, use the shared `SKILL.md` content and the MCP snippets in `docs/install-claude-code.md`. Claude compatibility is documented conservatively; unsupported Claude plugin behavior is not assumed.
+For Claude Code, the plugins install natively from the `.claude-plugin/marketplace.json` catalog:
+
+```bash
+/plugin marketplace add fnordpig/ha-agent-marketplace
+/plugin install ha-foundation-skills@ha-agent-marketplace-claude-compat
+```
+
+See `docs/install-claude-code.md` for the full flow plus MCP snippets. MCP servers and review-gate hooks are opt-in on both hosts and are not auto-started by install.
 
 ## Profiles
 

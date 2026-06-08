@@ -1,6 +1,9 @@
 # Hook Policy
 
-These hooks are optional templates, not marketplace-installed defaults.
+These hooks are optional templates, not marketplace-installed defaults. They ship
+at `hooks/templates/hooks.json` (not `hooks/hooks.json`) so that Claude Code does
+not auto-discover and register them on install; Codex does not auto-register them
+either, since the plugin manifest does not declare a hooks path.
 
 Use them only when you want an additional local warning layer around sensitive
 Home Assistant work. The main safety model is the review-gates skills plus

@@ -1,0 +1,8 @@
+{
+  "name": "ha-context-official",
+  "version": "0.1.5",
+  "description": "Official Home Assistant MCP context and exposed-entity control profile.",
+  "author": {"name": "fnordpig"},
+  "license": "MIT",
+  "keywords": ["home-assistant", "mcp", "official"]
+}
