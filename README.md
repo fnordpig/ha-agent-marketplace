@@ -33,21 +33,23 @@ See `docs/install-claude-code.md` for the full flow plus MCP snippets. MCP serve
 
 ## MCP And Skill Inventory
 
-See `docs/mcp-inventory.md` for the canonical mapping between plugins and MCPs. The `ha-config-ha-mcp` plugin includes both `uvx ha-mcp@latest` and HTTP/add-on templates, but MCP templates are opt-in and are not auto-started by plugin install. Skill packs are handled as local curated skills plus the upstream `homeassistant-ai/skills` submodule.
+`docs/mcp-inventory.md` is the canonical mapping of each plugin to its MCP integration and skill-pack handling. The essentials:
 
-To connect Home Assistant MCPs from inside Codex, ask:
+- **No MCP server is auto-started by install.** Every MCP template lives under `docs/templates/` with placeholder URLs/tokens; copy one into your local client config after filling in real values. `ha-config-ha-mcp` ships both a `uvx ha-mcp@latest` (stdio) and an HTTP/add-on template.
+- **Skills** are local curated packs plus the upstream `homeassistant-ai/skills` pack (installed as the `home-assistant-skills` plugin).
 
-```text
-Set up Home Assistant MCPs for http://homeassistant:8123 with the builder profile.
-```
+Connecting the MCPs is opt-in and per-profile, and the setup path differs by host:
 
-To choose the right plugin, MCP, skill, and safety gate for a task, use the orientation graph:
+- **Codex** — ask the agent in natural language, e.g. `Set up Home Assistant MCPs for http://homeassistant:8123 with the builder profile.` (drives the `ha-mcp-setup` skill and `setup_ha_mcps.py`).
+- **Claude Code** — use the `claude mcp add-json` snippets and templates in `docs/install-claude-code.md`.
+
+To choose the right plugin, MCP, skill, and safety gate for a task, the orientation command works on **both hosts**:
 
 ```text
 /ha-marketplace-orientation inspect my automations for stale entity references
 ```
 
-`homeassistant-ai/skills` is installed by Codex as a direct Git plugin source, pinned to the same upstream commit tracked by the maintainer submodule. The submodule at `plugins/homeassistant-ai-skills` is for local review and maintainer workflows. Clone with submodules when you want that local checkout populated:
+The `home-assistant-skills` plugin is the upstream `homeassistant-ai/skills` pack, pinned to one upstream commit. Codex installs it from a direct Git source; Claude Code installs it from the local `./plugins/homeassistant-ai-skills` submodule. To populate that submodule for local review:
 
 ```bash
 git clone --recurse-submodules git@github.com:fnordpig/ha-agent-marketplace.git
@@ -55,16 +57,18 @@ git clone --recurse-submodules git@github.com:fnordpig/ha-agent-marketplace.git
 
 ## Environment Variables
 
-Templates reference placeholders only:
+The MCP templates reference placeholders only — set the real values in your local MCP client config and never commit them. Which variables you need depends on the profile/MCP you opt into:
 
-- `HOMEASSISTANT_URL`
-- `HOMEASSISTANT_TOKEN`
-- `HA_MCP_URL`
-- `HA_MCP_TOKEN`
-- `HA_AGENT_URL`
-- `HA_AGENT_KEY`
+| Variable | Used by | What it is |
+|---|---|---|
+| `HOMEASSISTANT_URL` | `ha-config-ha-mcp` — `uvx ha-mcp@latest` (stdio) | Base URL of your HA instance, e.g. `http://homeassistant:8123`. |
+| `HOMEASSISTANT_TOKEN` | `ha-config-ha-mcp` — `uvx ha-mcp@latest` (stdio) | Long-lived access token (HA → your user profile → Security → Long-lived access tokens). |
+| `HA_MCP_URL` | `ha-config-ha-mcp` — HTTP / add-on / proxy mode | URL of a remotely-hosted `ha-mcp` HTTP endpoint, when you are not running the local `uvx` client. |
+| `HA_MCP_TOKEN` | `ha-config-ha-mcp` — HTTP / add-on / proxy mode | Auth token for that HTTP `ha-mcp` endpoint. |
+| `HA_AGENT_URL` | `ha-deploy-vibecode` — `@coolver/home-assistant-mcp` | URL of the Coolver HA Vibecode Agent bridge. |
+| `HA_AGENT_KEY` | `ha-deploy-vibecode` — `@coolver/home-assistant-mcp` | API key for the Vibecode Agent bridge. |
 
-Never commit real values.
+The official Home Assistant MCP Server (`ha-context-official`) is reached at `https://<host>/api/mcp` and authenticates via OAuth in Claude Code — it does not use these tokens. See `docs/install-claude-code.md`.
 
 ## Safety
 
