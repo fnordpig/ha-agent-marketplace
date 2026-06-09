@@ -28,4 +28,5 @@ The post-turn hook emits a short reporting reminder.
 
 Both hook commands are intentionally fail-open. If the hook script is missing
 from a local cache, the command exits successfully instead of blocking all
-Codex tool calls. The hook warning is an aid, not an enforcement boundary.
+agent tool calls (in Codex or Claude Code). The hook warning is an aid, not an
+enforcement boundary.

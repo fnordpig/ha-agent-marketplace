@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Configure Home Assistant MCP profiles in Codex config."""
+"""Configure Home Assistant MCP profiles for Codex or Claude Code."""
 
 from __future__ import annotations
 
@@ -24,12 +24,21 @@ DEFAULT_OFFICIAL_PATH = "/api/mcp"
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Configure Home Assistant MCP servers for Codex.",
+        description="Configure Home Assistant MCP servers for Codex or Claude Code.",
     )
     parser.add_argument(
         "host",
         nargs="?",
         help="Home Assistant host or URL, for example homeassistant.local or http://homeassistant:8123.",
+    )
+    parser.add_argument(
+        "--client",
+        choices=("codex", "claude"),
+        default="codex",
+        help=(
+            "Target agent host. codex writes Codex config.toml (default); "
+            "claude prints the equivalent `claude mcp add-json` commands to run."
+        ),
     )
     parser.add_argument(
         "--profile",
@@ -68,7 +77,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="Allow configuring high-privilege Vibecode deployer MCP for --profile full.",
     )
-    parser.add_argument("--codex-home", default=os.environ.get("CODEX_HOME", "~/.codex"))
+    parser.add_argument(
+        "--codex-home",
+        default=os.environ.get("CODEX_HOME", "~/.codex"),
+        help="Codex home directory (only used with --client codex). Default: CODEX_HOME or ~/.codex.",
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--no-backup", action="store_true")
     return parser.parse_args(argv)
@@ -121,6 +134,37 @@ def normalize_ha_url(raw_host: str, args: argparse.Namespace) -> str:
 
 def official_mcp_url(base_url: str) -> str:
     return base_url.rstrip("/") + DEFAULT_OFFICIAL_PATH
+
+
+# --- Server selection (shared by both render paths so they cannot drift) -----
+
+
+def selected_server_names(args: argparse.Namespace) -> list[str]:
+    names: list[str] = []
+    if args.profile in {"observer", "builder", "full"}:
+        names.append("home-assistant-official")
+    if args.profile in {"builder", "full"}:
+        names.append("home-assistant-config-uvx")
+    if args.profile == "deployer" or (args.profile == "full" and args.include_deployer):
+        names.append("home-assistant-vibecode")
+    return names
+
+
+def require_base_url(names: list[str], base_url: str | None) -> None:
+    if base_url is None and {"home-assistant-official", "home-assistant-config-uvx"} & set(names):
+        raise ValueError("host is required for observer, builder, and full profiles")
+
+
+def required_envs(args: argparse.Namespace, names: list[str]) -> set[str]:
+    envs: set[str] = set()
+    if {"home-assistant-official", "home-assistant-config-uvx"} & set(names):
+        envs.add(args.ha_token_env)
+    if "home-assistant-vibecode" in names:
+        envs.update({args.agent_url_env, args.agent_key_env})
+    return envs
+
+
+# --- Codex render path (TOML in config.toml) ---------------------------------
 
 
 def split_toml_path(header: str) -> list[str]:
@@ -216,24 +260,17 @@ def vibecode_block(agent_url_env: str, agent_key_env: str) -> str:
     )
 
 
-def selected_blocks(args: argparse.Namespace, base_url: str | None) -> dict[str, str]:
+def codex_blocks(names: list[str], args: argparse.Namespace, base_url: str | None) -> dict[str, str]:
     blocks: dict[str, str] = {}
-    if args.profile in {"observer", "builder", "full"}:
-        if base_url is None:
-            raise ValueError("host is required for observer, builder, and full profiles")
-        blocks["home-assistant-official"] = official_block(official_mcp_url(base_url), args.ha_token_env)
-    if args.profile in {"builder", "full"}:
-        if base_url is None:
-            raise ValueError("host is required for builder and full profiles")
-        blocks["home-assistant-config-uvx"] = ha_mcp_uvx_block(
-            base_url,
-            args.ha_url_env,
-            args.ha_token_env,
-        )
-    if args.profile == "deployer" or (args.profile == "full" and args.include_deployer):
-        blocks["home-assistant-vibecode"] = vibecode_block(args.agent_url_env, args.agent_key_env)
-    if args.profile == "full" and not args.include_deployer:
-        print("Skipping deployer MCP for full profile; pass --include-deployer to enable it.")
+    for name in names:
+        if name == "home-assistant-official":
+            assert base_url is not None  # guaranteed by require_base_url
+            blocks[name] = official_block(official_mcp_url(base_url), args.ha_token_env)
+        elif name == "home-assistant-config-uvx":
+            assert base_url is not None  # guaranteed by require_base_url
+            blocks[name] = ha_mcp_uvx_block(base_url, args.ha_url_env, args.ha_token_env)
+        elif name == "home-assistant-vibecode":
+            blocks[name] = vibecode_block(args.agent_url_env, args.agent_key_env)
     return blocks
 
 
@@ -260,6 +297,80 @@ def write_config(codex_home: Path, blocks: dict[str, str], dry_run: bool, backup
     return backup_path
 
 
+def run_codex(args: argparse.Namespace, names: list[str], base_url: str | None) -> int:
+    blocks = codex_blocks(names, args, base_url)
+    backup_path = write_config(
+        Path(args.codex_home).expanduser(), blocks, args.dry_run, not args.no_backup
+    )
+    if args.dry_run:
+        return 0
+    print(f"Configured Home Assistant MCP profile `{args.profile}` for Codex")
+    for name in blocks:
+        print(f"- {name}")
+    if backup_path:
+        print(f"Backup: {backup_path}")
+    missing = sorted({name for name in required_envs(args, names) if name not in os.environ})
+    if missing:
+        print(f"Warning: not set in this process: {', '.join(missing)}")
+    print("Restart Codex, then use /mcp verbose to confirm startup.")
+    return 0
+
+
+# --- Claude Code render path (claude mcp add-json commands) -------------------
+
+
+def shell_single_quote(value: str) -> str:
+    return "'" + value.replace("'", "'\\''") + "'"
+
+
+def env_ref(name: str) -> str:
+    return "${" + name + "}"
+
+
+def claude_spec(name: str, args: argparse.Namespace, base_url: str | None) -> dict:
+    if name == "home-assistant-official":
+        assert base_url is not None  # guaranteed by require_base_url
+        return {
+            "type": "http",
+            "url": official_mcp_url(base_url),
+            "headers": {"Authorization": f"Bearer {env_ref(args.ha_token_env)}"},
+        }
+    if name == "home-assistant-config-uvx":
+        assert base_url is not None  # guaranteed by require_base_url
+        return {
+            "command": "uvx",
+            "args": ["ha-mcp@latest"],
+            "env": {args.ha_url_env: base_url, args.ha_token_env: env_ref(args.ha_token_env)},
+        }
+    if name == "home-assistant-vibecode":
+        return {
+            "command": "npx",
+            "args": ["-y", "@coolver/home-assistant-mcp@latest"],
+            "env": {
+                args.agent_url_env: env_ref(args.agent_url_env),
+                args.agent_key_env: env_ref(args.agent_key_env),
+            },
+        }
+    raise ValueError(f"unknown server name: {name}")
+
+
+def run_claude(args: argparse.Namespace, names: list[str], base_url: str | None) -> int:
+    print(f"# Claude Code setup for Home Assistant MCP profile `{args.profile}`")
+    print("# Run each command, then restart Claude Code or run /mcp to confirm.")
+    for name in names:
+        spec = claude_spec(name, args, base_url)
+        print(f"claude mcp add-json {name} {shell_single_quote(json.dumps(spec))}")
+    missing = sorted({name for name in required_envs(args, names) if name not in os.environ})
+    if missing:
+        print(f"# Export before the MCP starts: {', '.join(missing)}")
+    if "home-assistant-official" in names:
+        print(
+            "# The official server may require OAuth instead of a bearer token; "
+            "see docs/install-claude-code.md for the OAuth variant."
+        )
+    return 0
+
+
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
     for flag, value in (
@@ -273,31 +384,20 @@ def main(argv: list[str]) -> int:
 
     try:
         base_url = normalize_ha_url(args.host, args) if args.host else None
-        blocks = selected_blocks(args, base_url)
+        names = selected_server_names(args)
+        require_base_url(names, base_url)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    if not blocks:
+    if not names:
         print("error: no MCP servers selected", file=sys.stderr)
         return 2
+    if args.profile == "full" and not args.include_deployer:
+        print("Skipping deployer MCP for full profile; pass --include-deployer to enable it.")
 
-    backup_path = write_config(Path(args.codex_home).expanduser(), blocks, args.dry_run, not args.no_backup)
-    if args.dry_run:
-        return 0
-
-    print(f"Configured Home Assistant MCP profile `{args.profile}`")
-    for name in blocks:
-        print(f"- {name}")
-    if backup_path:
-        print(f"Backup: {backup_path}")
-    required_envs = [args.ha_token_env]
-    if "home-assistant-vibecode" in blocks:
-        required_envs.extend([args.agent_url_env, args.agent_key_env])
-    missing = sorted({name for name in required_envs if name not in os.environ})
-    if missing:
-        print(f"Warning: not set in this process: {', '.join(missing)}")
-    print("Restart Codex, then use /mcp verbose to confirm startup.")
-    return 0
+    if args.client == "claude":
+        return run_claude(args, names, base_url)
+    return run_codex(args, names, base_url)
 
 
 if __name__ == "__main__":

@@ -24,9 +24,9 @@ Put real `HA_MCP_URL`, `HA_MCP_TOKEN`, `HOMEASSISTANT_URL`, and `HOMEASSISTANT_T
 
 The bundled file is `docs/templates/mcp.json`, not a plugin-root `.mcp.json`, because both Claude Code and Codex auto-start a root MCP file on install. Keeping it under `docs/templates/` makes connection strictly opt-in: copy the entry you want into local config after replacing placeholders.
 
-## In-Codex Setup
+## Guided Setup
 
-Use the shared builder profile:
+Use the shared builder profile (works for Codex and Claude Code):
 
 ```text
 Set up Home Assistant MCPs for http://homeassistant:8123 with the builder profile.
@@ -42,7 +42,11 @@ This configures `home-assistant-official` and `home-assistant-config-uvx` (**std
 
 The script does **not** configure HTTP mode. For the ha-mcp add-on / HTTP server, copy the `home-assistant-config-http` entry from `docs/templates/mcp.json` into local config and set `HA_MCP_URL` + `HA_MCP_TOKEN` yourself (see Transport Modes above).
 
-For Claude Code, there is no in-host setup script — use the `claude mcp add-json` snippets in `docs/install-claude-code.md` with the same two transport modes.
+For Claude Code, add `--client claude` to the same command — the script prints the equivalent `claude mcp add-json` commands instead of writing config:
+
+```bash
+uv run python plugins/ha-foundation-skills/scripts/setup_ha_mcps.py http://homeassistant:8123 --profile builder --client claude
+```
 
 ## Current Upstream Notes
 

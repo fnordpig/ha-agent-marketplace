@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Configure Codex for the official Home Assistant MCP Server."""
+"""Configure the official Home Assistant MCP Server for Codex or Claude Code."""
 
 from __future__ import annotations
 
@@ -22,13 +22,22 @@ SAFE_BARE_KEY = re.compile(r"^[A-Za-z0-9_-]+$")
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Register Home Assistant's official /api/mcp endpoint in Codex config.",
+        description="Register Home Assistant's official /api/mcp endpoint for Codex or Claude Code.",
     )
     parser.add_argument(
         "host",
         help=(
             "Home Assistant host or URL. Examples: homeassistant.local, "
             "192.168.1.10:8123, https://ha.example.com"
+        ),
+    )
+    parser.add_argument(
+        "--client",
+        choices=("codex", "claude"),
+        default="codex",
+        help=(
+            "Target agent host. codex writes Codex config.toml (default); "
+            "claude prints the equivalent `claude mcp add-json` command to run."
         ),
     )
     parser.add_argument(
@@ -57,7 +66,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--name",
         default=DEFAULT_NAME,
-        help=f"Codex MCP server name. Default: {DEFAULT_NAME}.",
+        help=f"MCP server name. Default: {DEFAULT_NAME}.",
     )
     parser.add_argument(
         "--token-env",
@@ -67,18 +76,18 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--codex-home",
         default=os.environ.get("CODEX_HOME", "~/.codex"),
-        help="Codex home directory. Default: CODEX_HOME or ~/.codex.",
+        help="Codex home directory (only used with --client codex). Default: CODEX_HOME or ~/.codex.",
     )
     parser.add_argument(
         "--startup-timeout",
         type=float,
         default=10.0,
-        help="MCP startup timeout in seconds. Default: 10.",
+        help="MCP startup timeout in seconds (Codex only). Default: 10.",
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Print the config block without writing config.toml.",
+        help="Print the Codex config block without writing config.toml (Codex only).",
     )
     parser.add_argument(
         "--no-backup",
@@ -238,6 +247,50 @@ def write_config(
     return backup_path
 
 
+def shell_single_quote(value: str) -> str:
+    return "'" + value.replace("'", "'\\''") + "'"
+
+
+def run_codex(args: argparse.Namespace, url: str) -> int:
+    block = config_block(args.name, url, args.token_env, args.startup_timeout)
+    backup_path = write_config(
+        codex_home=Path(args.codex_home).expanduser(),
+        server_name=args.name,
+        block=block,
+        dry_run=args.dry_run,
+        backup=not args.no_backup,
+    )
+    if args.dry_run:
+        return 0
+    print(f"Configured Codex MCP server `{args.name}`")
+    print(f"URL: {url}")
+    print(f"Token env: {args.token_env}")
+    if backup_path:
+        print(f"Backup: {backup_path}")
+    if args.token_env not in os.environ:
+        print(f"Warning: {args.token_env} is not set in this process")
+    print("Restart Codex, then use /mcp verbose to confirm startup.")
+    return 0
+
+
+def run_claude(args: argparse.Namespace, url: str) -> int:
+    spec = {
+        "type": "http",
+        "url": url,
+        "headers": {"Authorization": "Bearer ${" + args.token_env + "}"},
+    }
+    print(f"# Claude Code setup for the official Home Assistant MCP server `{args.name}`")
+    print(f"claude mcp add-json {args.name} {shell_single_quote(json.dumps(spec))}")
+    if args.token_env not in os.environ:
+        print(f"# Export {args.token_env} before the MCP starts.")
+    print(
+        "# The official server may require OAuth instead of a bearer token; "
+        "see docs/install-claude-code.md for the OAuth variant."
+    )
+    print("# Then restart Claude Code or run /mcp to confirm.")
+    return 0
+
+
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
     if not SAFE_BARE_KEY.fullmatch(args.name):
@@ -259,28 +312,9 @@ def main(argv: list[str]) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
-    block = config_block(args.name, url, args.token_env, args.startup_timeout)
-    codex_home = Path(args.codex_home).expanduser()
-    backup_path = write_config(
-        codex_home=codex_home,
-        server_name=args.name,
-        block=block,
-        dry_run=args.dry_run,
-        backup=not args.no_backup,
-    )
-
-    if args.dry_run:
-        return 0
-
-    print(f"Configured Codex MCP server `{args.name}`")
-    print(f"URL: {url}")
-    print(f"Token env: {args.token_env}")
-    if backup_path:
-        print(f"Backup: {backup_path}")
-    if args.token_env not in os.environ:
-        print(f"Warning: {args.token_env} is not set in this process")
-    print("Restart Codex, then use /mcp verbose to confirm startup.")
-    return 0
+    if args.client == "claude":
+        return run_claude(args, url)
+    return run_codex(args, url)
 
 
 if __name__ == "__main__":

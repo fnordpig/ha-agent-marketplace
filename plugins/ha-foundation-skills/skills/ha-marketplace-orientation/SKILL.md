@@ -34,7 +34,7 @@ This is the map skill. It does not replace the narrower skills or the upstream `
 
 | Hub | Use when | Load next | Upstream grounding |
 |---|---|---|
-| Setup and profile selection | Connecting Codex to Home Assistant or choosing observer/builder/deployer/full | `ha-mcp-setup` | `docs/mcp-inventory.md` |
+| Setup and profile selection | Connecting Codex or Claude Code to Home Assistant or choosing observer/builder/deployer/full | `ha-mcp-setup` | `docs/mcp-inventory.md` |
 | Live context and simple control | Reading exposed state or using Assist-oriented controls | `ha-official-mcp-context` | `device-control.md`, `domain-docs.md` |
 | Config authoring through MCP | Creating or editing automations, helpers, scripts, dashboards, registry metadata, or config checks through `ha-mcp` | `ha-mcp-config-author`, then `ha-mcp-tool-policy` | `automation-patterns.md`, `helper-selection.md`, `template-guidelines.md`, `device-control.md` |
 | Repo-first refactor | Working in a Git/YAML Home Assistant config repo | `ha-repo-refactor`, then `ha-dependency-graph` and `ha-yaml-boundaries` | `safe-refactoring.md`, `yaml-only-integrations.md` |

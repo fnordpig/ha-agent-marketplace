@@ -79,7 +79,7 @@ ha-marketplace-orientation
 | Dashboard design | Connects local dashboard skills, upstream card/view docs, storage/YAML boundaries, and visual iteration. | Dense because layout choices, card features, HACS, and storage-mode mutation are separate risk surfaces. |
 | YAML boundary management | Connects repo-first work, UI-managed config, YAML-only integrations, reload/restart expectations, and deployment gates. | Grounding prevents agents from writing YAML for UI-configured integrations or editing `.storage`. |
 | Review/deploy safety | Connects tool policy, backup/rollback, destructive operations, secrets, restart/reload, and Vibecode deploy. | Cross-cutting; every write path eventually routes here when risk increases. |
-| MCP profile setup | Connects observer, builder, deployer, and full profiles to actual Codex config behavior. | Prevents placeholder MCP auto-starts and accidental high-privilege deployer enablement. |
+| MCP profile setup | Connects observer, builder, deployer, and full profiles to actual Codex and Claude Code config behavior. | Prevents placeholder MCP auto-starts and accidental high-privilege deployer enablement. |
 
 ## Local Skill To Upstream Grounding
 
