@@ -4,6 +4,9 @@ description: Orient Home Assistant marketplace work using the local skill knowle
 graph:
   generalizes_to: []
   specializes_into:
+    - ha-agent-operating-model
+    - ha-semantic-home-model
+    - ha-voice-assist-grounding
     - ha-mcp-setup
     - ha-official-mcp-context
     - ha-mcp-config-author
@@ -19,6 +22,7 @@ graph:
     - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/device-control.md
     - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/dashboard-guide.md
     - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/template-guidelines.md
+    - docs/teaching-home-assistant-mcp.md
     - docs/skill-knowledge-graph.md
     - docs/mcp-inventory.md
     - plugins/ha-config-ha-mcp/docs/setup.md
@@ -34,6 +38,9 @@ This is the map skill. It does not replace the narrower skills or the upstream `
 
 | Hub | Use when | Load next | Upstream grounding |
 |---|---|---|
+| Operating model | Any task spans multiple skills, MCPs, hosts, or risk classes | `ha-agent-operating-model` | `docs/teaching-home-assistant-mcp.md` |
+| Semantic home model | Names, areas, labels, helpers, device/entity cleanup, voice exposure, or dashboard semantics matter | `ha-semantic-home-model` | `safe-refactoring.md`, `helper-selection.md`, `device-control.md` |
+| Voice grounding | Assist, Alexa, LLM prompts, exposed entities, scripts for voice, or ambiguous spoken commands | `ha-voice-assist-grounding` | `device-control.md`, `domain-docs.md`, `safe-refactoring.md` |
 | Setup and profile selection | Connecting Codex or Claude Code to Home Assistant or choosing observer/builder/deployer/full | `ha-mcp-setup` | `docs/mcp-inventory.md` |
 | Live context and simple control | Reading exposed state or using Assist-oriented controls | `ha-official-mcp-context` | `device-control.md`, `domain-docs.md` |
 | Config authoring through MCP | Creating or editing automations, helpers, scripts, dashboards, registry metadata, or config checks through `ha-mcp` | `ha-mcp-config-author`, then `ha-mcp-tool-policy` | `automation-patterns.md`, `helper-selection.md`, `template-guidelines.md`, `device-control.md` |
@@ -64,15 +71,43 @@ This is the map skill. It does not replace the narrower skills or the upstream `
 - `generalizes_to`: broader skills that should be loaded first when the task is underspecified.
 - `cross_references`: adjacent skills, upstream references, or docs that inform the work without being parent/child details.
 
+## Canonical BPMN Loop
+
+Use this loop unless a narrower skill gives a stricter one.
+
+```mermaid
+flowchart LR
+  start((Start)) --> orient[Orient request]
+  orient --> classify{Risk class?}
+  classify -->|Read| observe[Observe]
+  classify -->|Write| model[Model semantic graph]
+  classify -->|Deploy| deploy[Run deploy gate]
+  observe --> propose[Answer or propose]
+  model --> propose
+  propose --> review{Review needed?}
+  review -->|No| apply[Apply smallest safe change]
+  review -->|Yes| gate[Run review skill]
+  gate --> approval{Explicit approval?}
+  approval -->|No| stop((Stop))
+  approval -->|Yes| apply
+  deploy --> gate
+  apply --> validate[Validate]
+  validate --> report[Report outcome and rollback]
+  report --> done((Done))
+```
+
 ## Routing Rules
 
 1. If the user wants to connect MCPs, run the **MCP Setup Decision** elicitation below first, then use `ha-mcp-setup` (local) or the HTTP template (remote) per the result.
-2. If the user wants to inspect or control exposed devices, use `ha-official-mcp-context`.
-3. If the user wants to author configuration through live Home Assistant, use `ha-mcp-config-author` and classify tools with `ha-mcp-tool-policy`.
-4. If the user wants to change a Home Assistant repo, use `ha-repo-refactor` before using live write tools.
-5. If the user wants dashboards, route through the dashboard hub and use `ha-mcp-config-author` only when applying changes live.
-6. If the user wants deployment, use deployer safety before any deploy tool.
-7. If the operation deletes, removes, restarts, renames, touches registry metadata, exposes secrets, or edits `.storage`, route through review gates.
+2. If the task spans multiple skills or risk classes, use `ha-agent-operating-model`.
+3. If names, areas, labels, exposure, dashboards, or device/entity cleanup matter, build the model with `ha-semantic-home-model`.
+4. If the user wants voice, Assist, Alexa, LLM prompt, exposure, or spoken-command work, use `ha-voice-assist-grounding`.
+5. If the user wants to inspect or control exposed devices, use `ha-official-mcp-context`.
+6. If the user wants to author configuration through live Home Assistant, use `ha-mcp-config-author` and classify tools with `ha-mcp-tool-policy`.
+7. If the user wants to change a Home Assistant repo, use `ha-repo-refactor` before using live write tools.
+8. If the user wants dashboards, route through the dashboard hub and use `ha-mcp-config-author` only when applying changes live.
+9. If the user wants deployment, use deployer safety before any deploy tool.
+10. If the operation deletes, removes, restarts, renames, touches registry metadata, exposes secrets, or edits `.storage`, route through review gates.
 
 ## MCP Setup Decision
 

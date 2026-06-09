@@ -13,6 +13,9 @@ graph:
     - ha-entity-refactor
     - ha-change-review
   cross_references:
+    - ha-agent-operating-model
+    - ha-semantic-home-model
+    - ha-voice-assist-grounding
     - home-assistant-best-practices
     - ha-repo-refactor
     - ha-lovelace-yaml-dashboard
@@ -28,11 +31,34 @@ graph:
 ## Guidance
 
 - Use ha-mcp for automations, scripts, helpers, dashboards, registry metadata, search, logs, traces, backups, and config checks.
+- Classify the target object and risk before choosing a tool.
+- Observe live state and existing config before proposing a write.
 - Prefer creating new agent-managed artifacts over mutating unclear legacy config.
 - Always produce a diff-style summary before applying changes.
+
+## BPMN Workflow
+
+```mermaid
+flowchart LR
+  start((Start)) --> classify[Classify object and risk]
+  classify --> observe[Read state, config, history, logs, traces, or refs]
+  observe --> primitive{Native HA primitive fits?}
+  primitive -->|Yes| plan[Plan helper, script, scene, automation, dashboard, or config flow]
+  primitive -->|No| justify[Justify template, YAML, or beta tool]
+  plan --> diff[Produce diff-style summary]
+  justify --> diff
+  diff --> review{Write, refactor, or destructive?}
+  review -->|No| answer[Answer with evidence]
+  review -->|Yes| gate[Run tool policy and review gate]
+  gate --> approval{Approval required and granted?}
+  approval -->|No| stop((Stop))
+  approval -->|Yes| apply[Apply supported MCP write]
+  apply --> validate[Validate and report rollback]
+  answer --> done((Done))
+  validate --> done
+```
 
 ## Safety
 
 - Treat broad write tools as high-risk.
 - Do not remove devices, helpers, dashboards, or registry entries without dependency scan and explicit approval.
-

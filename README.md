@@ -49,6 +49,8 @@ To choose the right plugin, MCP, skill, and safety gate for a task, the orientat
 /ha-marketplace-orientation inspect my automations for stale entity references
 ```
 
+For a curriculum-style explanation of how to teach and learn these layers, see `docs/teaching-home-assistant-mcp.md`.
+
 The `home-assistant-skills` plugin is the upstream `homeassistant-ai/skills` pack, pinned to one upstream commit. Codex installs it from a direct Git source; Claude Code installs it from the local `./plugins/homeassistant-ai-skills` submodule. To populate that submodule for local review:
 
 ```bash

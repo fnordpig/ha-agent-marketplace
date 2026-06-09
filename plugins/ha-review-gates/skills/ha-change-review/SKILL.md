@@ -10,6 +10,7 @@ graph:
     - ha-destructive-operation-review
     - ha-security-review
   cross_references:
+    - ha-agent-operating-model
     - ha-mcp-tool-policy
     - ha-repo-refactor
     - ha-vibecode-deploy
@@ -26,7 +27,21 @@ graph:
 - Validation command is identified.
 - Rollback path is documented.
 
+## BPMN Workflow
+
+```mermaid
+flowchart LR
+  start((Change ready)) --> classify[Classify read/write/refactor/destructive/deploy]
+  classify --> evidence[Collect files, tools, refs, validation, rollback]
+  evidence --> risky{Risky or destructive?}
+  risky -->|No| approve[Approve with notes]
+  risky -->|Yes| specialist[Run destructive, security, or deploy review]
+  specialist --> approval{Explicit approval?}
+  approval -->|No| stop((Stop))
+  approval -->|Yes| approve
+  approve --> report[Report review result]
+```
+
 ## Safety
 
 - Do not approve live deploys without backup and validation evidence.
-

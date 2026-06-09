@@ -10,6 +10,7 @@ graph:
     - ha-mcp-config-author
     - ha-vibecode-deploy
   cross_references:
+    - ha-agent-operating-model
     - docs/mcp-inventory.md
     - plugins/ha-foundation-skills/scripts/setup_ha_mcps.py
 ---
@@ -24,6 +25,22 @@ Use this skill when the user wants to configure one or more Home Assistant MCP s
 - `builder`: official HA MCP plus `homeassistant-ai/ha-mcp` via `uvx`.
 - `deployer`: Vibecode deployer only, high privilege.
 - `full`: observer and builder by default; deployer only with `--include-deployer`.
+
+## BPMN Workflow
+
+```mermaid
+flowchart LR
+  start((Setup request)) --> host[Identify host: Codex or Claude Code]
+  host --> profile[Select observer, builder, deployer, or full]
+  profile --> transport{ha-mcp transport?}
+  transport -->|stdio| uvx[Configure uvx with HOMEASSISTANT_URL and token env var]
+  transport -->|HTTP| http[Use HTTP template with HA_MCP_URL and token env var]
+  uvx --> deployer{Include deployer?}
+  http --> deployer
+  deployer -->|No| restart[Restart client and verify MCP]
+  deployer -->|Yes| approval[Require explicit high-privilege approval]
+  approval --> restart
+```
 
 ## Command
 

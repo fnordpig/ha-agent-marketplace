@@ -14,6 +14,15 @@ The upstream submodule is not edited. Local skills carry `graph` frontmatter; up
 
 ```text
 ha-marketplace-orientation
+├── ha-agent-operating-model
+│   ├── ha-semantic-home-model
+│   │   ├── ha-entity-refactor
+│   │   ├── ha-helper-selection
+│   │   ├── ha-lovelace-yaml-dashboard
+│   │   └── ha-voice-assist-grounding
+│   ├── ha-mcp-tool-policy
+│   ├── ha-change-review
+│   └── ha-backup-rollback
 ├── ha-mcp-setup
 │   ├── ha-official-mcp-setup
 │   ├── ha-official-mcp-context
@@ -22,6 +31,7 @@ ha-marketplace-orientation
 │   └── ha-vibecode-deploy
 ├── ha-mcp-config-author
 │   ├── ha-mcp-tool-policy
+│   ├── ha-voice-assist-grounding
 │   ├── ha-automation-author
 │   │   └── upstream: automation-patterns.md, device-control.md, examples.yaml
 │   ├── ha-helper-selection
@@ -80,11 +90,17 @@ ha-marketplace-orientation
 | YAML boundary management | Connects repo-first work, UI-managed config, YAML-only integrations, reload/restart expectations, and deployment gates. | Grounding prevents agents from writing YAML for UI-configured integrations or editing `.storage`. |
 | Review/deploy safety | Connects tool policy, backup/rollback, destructive operations, secrets, restart/reload, and Vibecode deploy. | Cross-cutting; every write path eventually routes here when risk increases. |
 | MCP profile setup | Connects observer, builder, deployer, and full profiles to actual Codex and Claude Code config behavior. | Prevents placeholder MCP auto-starts and accidental high-privilege deployer enablement. |
+| Agent operating model | Connects all work to orient, observe, model, propose, review, apply, validate, report. | Prevents agents from jumping directly from request to mutation. |
+| Semantic home modeling | Connects floors, areas, devices, entities, labels, helpers, voice exposure, dashboards, and config ownership. | High utility because most voice, dashboard, and refactor failures are semantic-model drift. |
+| Voice/LLM grounding | Connects Assist exposure, scripts/scenes, aliases, live context, security controls, and model prompts. | Obscure because failures often look like LLM problems but are naming, exposure, or capability-model problems. |
 
 ## Local Skill To Upstream Grounding
 
 | Local skill | Primary upstream grounding | Notes |
 |---|---|---|
+| `ha-agent-operating-model` | `docs/teaching-home-assistant-mcp.md`, `docs/mcp-inventory.md`, `docs/security-model.md` | Use for any task that spans multiple MCPs, hosts, or risk classes. |
+| `ha-semantic-home-model` | `safe-refactoring.md`, `helper-selection.md`, `device-control.md` | Use before voice, dashboard, refactor, naming, labels, or exposure work. |
+| `ha-voice-assist-grounding` | `device-control.md`, `domain-docs.md`, `safe-refactoring.md` | Use before changing Assist/Alexa/LLM exposure, prompts, scripts, or pipelines. |
 | `ha-automation-author` | `automation-patterns.md`, `device-control.md`, `examples.yaml` | Use before writing triggers/actions/modes. |
 | `ha-helper-selection` | `helper-selection.md` | Use before choosing templates or new helpers. |
 | `ha-template-safety` | `template-guidelines.md`, `helper-selection.md` | Use to justify templates only after native/helper alternatives. |
@@ -107,9 +123,11 @@ ha-marketplace-orientation
 ## Use Pattern
 
 1. Start with `ha-marketplace-orientation` when the task is broad or ambiguous.
-2. Pick one semantic hub.
-3. Load the local hub skill.
-4. Read the upstream reference node that grounds the subtle part of the task.
-5. Follow `specializes_into` for operational detail.
-6. Follow `cross_references` only when the task touches an adjacent concern.
-7. For risky writes, route through `ha-change-review` or a narrower review gate.
+2. Load `ha-agent-operating-model` when the task crosses MCP, host, repo, live, or deploy boundaries.
+3. Build `ha-semantic-home-model` before voice, dashboard, naming, label, area, helper, or refactor work.
+4. Pick one semantic hub.
+5. Load the local hub skill.
+6. Read the upstream reference node that grounds the subtle part of the task.
+7. Follow `specializes_into` for operational detail.
+8. Follow `cross_references` only when the task touches an adjacent concern.
+9. For risky writes, route through `ha-change-review` or a narrower review gate.

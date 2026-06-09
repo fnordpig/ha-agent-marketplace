@@ -10,6 +10,7 @@ graph:
     - ha-backup-rollback
     - ha-change-review
   cross_references:
+    - ha-agent-operating-model
     - docs/security-model.md
     - plugins/ha-deploy-vibecode/docs/rollback.md
     - plugins/homeassistant-ai-skills/skills/home-assistant-best-practices/references/safe-refactoring.md
@@ -26,8 +27,25 @@ graph:
 4. Deploy through the configured MCP only after approval.
 5. Report status and rollback path.
 
+## BPMN Workflow
+
+```mermaid
+flowchart LR
+  start((Approved change)) --> plan[Write deploy plan]
+  plan --> backup{Backup confirmed?}
+  backup -->|No| stop1((Stop))
+  backup -->|Yes| validation{Validation passed?}
+  validation -->|No| stop2((Stop))
+  validation -->|Yes| rollback{Rollback known?}
+  rollback -->|No| stop3((Stop))
+  rollback -->|Yes| approval{Explicit deploy approval?}
+  approval -->|No| stop4((Stop))
+  approval -->|Yes| deploy[Deploy through Vibecode MCP]
+  deploy --> verify[Verify HA status]
+  verify --> report[Report status and rollback]
+```
+
 ## Safety
 
 - Do not deploy unreviewed changes.
 - Do not run destructive operations unless explicitly requested and confirmed.
-

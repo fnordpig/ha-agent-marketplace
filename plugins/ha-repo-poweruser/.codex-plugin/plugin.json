@@ -1,6 +1,6 @@
 {
   "name": "ha-repo-poweruser",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Repo-first Home Assistant YAML refactoring workflow.",
   "author": {"name": "fnordpig"},
   "license": "MIT",

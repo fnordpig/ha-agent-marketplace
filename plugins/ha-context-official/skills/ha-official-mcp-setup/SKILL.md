@@ -7,6 +7,7 @@ graph:
   specializes_into:
     - ha-official-mcp-context
   cross_references:
+    - ha-agent-operating-model
     - plugins/ha-context-official/scripts/setup_official_mcp.py
     - docs/mcp-inventory.md
 ---
@@ -23,6 +24,12 @@ Use this skill when the user wants to connect **Codex or Claude Code** to Home A
 4. Run the setup script with `uv run python`, adding `--client claude` for Claude Code.
 5. Use `HOMEASSISTANT_TOKEN` as the bearer token environment variable unless the user requests another variable.
 6. Tell the user to restart the host and confirm with `/mcp` (Codex: `/mcp verbose`).
+
+## Operating Rules
+
+- Configure only the official context/control MCP from this skill.
+- Keep broad config authoring and deployer setup as separate explicit profile choices.
+- Use environment variable references for tokens; do not move secrets into plugin files.
 
 ## Command
 

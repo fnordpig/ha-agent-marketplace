@@ -1,6 +1,6 @@
 {
   "name": "ha-dashboard-designer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Lovelace and YAML dashboard design skills for Home Assistant.",
   "author": {"name": "fnordpig"},
   "license": "MIT",
